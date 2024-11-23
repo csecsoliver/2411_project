@@ -10,17 +10,17 @@
     <script src="script.js" defer></script>
 </head>
 
-<body ondragstart="nameDragStart(event)">
+<body ondragstart="DragStart(event)">
     <div class="row">
 
-        <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
-            <h2>Player 2</h2>
+        <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="hand">
+            <h2>Machine 2</h2>
         </div>
-        <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
-            <h2>Player 3</h2>
+        <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="hand">
+            <h2>Machine 3</h2>
         </div>
-        <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
-            <h2>Player 4</h2>
+        <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="hand">
+            <h2>Machine 4</h2>
         </div>
     </div>
 
@@ -28,9 +28,10 @@
         <img id="card1" src="img/card.png" class="card" draggable="true">
     </div>
 
+
     <button onclick="Start()" id="startBtn">START</button>
 
-    <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
+    <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="hand">
         <h2>You</h2>
     </div>
 
