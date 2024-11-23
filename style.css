@@ -5,14 +5,32 @@ body {
     background-color: rgb(59, 59, 59);
 }
 
-.pool {
+#pool,
+#throwPool {
     width: fit-content;
-    margin: auto;
+}
+
+#pool .card {
+    width: 180px;
+    border-radius: 20px;
+    display: none;
+}
+
+#throwPool .card {
+    width: 180px;
+    border-radius: 30px;
 }
 
 .row {
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.row2 {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     align-items: center;
 }
 
@@ -24,11 +42,6 @@ body {
     user-select: none;
     border-radius: 10px;
     width: 70px;
-}
-
-.pool .card {
-    width: 180px;
-    border-radius: 20px;
 }
 
 
@@ -76,4 +89,12 @@ h2 {
     background-color: rgb(92, 92, 231);
     color: white;
     border: 1px solid transparent;
+    text-shadow: 2px 2px 1px #263b18;
+}
+
+#startBtn:active {
+    background-color: rgb(92, 92, 231);
+    color: white;
+    border: 1px solid transparent;
+    filter: brightness(40%);
 }

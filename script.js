@@ -8,20 +8,24 @@ for (let i = 0; i < 14; i++) {
         IMAGES.push('' + i + j);
     }
 }
+GeneratePool();
 
 
 function Start() {
     const players = document.querySelectorAll('.hand');
+    const pool = document.querySelector('#pool');
 
 
     for (let index = 0; index < 7; index++) {
-        players.forEach((player, i) => {
-            player.appendChild(RandomCard("card" + i + index));
+        players.forEach(player => {
+            player.appendChild(pool.lastChild);
         });
     }
     document.querySelector('#startBtn').remove();
 
-    GeneratePool();
+    document.querySelector('#poolCard').draggable = true;
+    pool.lastChild.draggable = false;
+    document.querySelector('#throwPool').appendChild(pool.lastChild);
 
 }
 
@@ -90,10 +94,9 @@ function RandomCard(index) {
 
 
 function GeneratePool() {
-    const pool = document.querySelector('.pool');
+    const pool = document.querySelector('#pool');
     for (let index = 0; index < IMAGES.length; index++) {
-        pool.appendChild(RandomCard('pool' + index));
-        pool.childNodes[index].style.display = 'none';
+        pool.appendChild(RandomCard('card' + index));
     }
 }
 
@@ -116,17 +119,16 @@ function DragStart(event) {
 
 function DragOver(event) {
     const group = event.target;
-    if (!group.classList.contains('hand')) return
-    group.style.border = '5px dashed black';
-    group.style.backgroundColor = '#ccc';
-
+    if (group.classList.contains('player')) {
+        group.style.border = '5px dashed black';
+        group.style.backgroundColor = '#ccc';
+    }
 
 
     event.preventDefault();
 }
 
 function DragLeave(event) {
-
     const group = event.target;
     if (!group.classList.contains('hand')) return
     group.style.border = '1px solid black';
@@ -136,8 +138,12 @@ function DragLeave(event) {
 function Drop(event) {
     const group = event.target;
     const card = document.getElementById(event.dataTransfer.getData('text'));
-    if (!group.classList.contains('hand')) return
-    group.style.border = '1px solid black';
-    group.style.backgroundColor = '#a3a3a3';
-    group.appendChild(card);
+    const pool = document.querySelector('#pool');
+
+    if (group.classList.contains('player') && card.id == 'poolCard') {
+        pool.lastChild.style.display = 'inline';
+        group.style.border = '1px solid black';
+        group.style.backgroundColor = '#a3a3a3';
+        group.appendChild(pool.lastChild);
+    }
 }
