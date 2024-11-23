@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO</title>
+    <link rel="shortcut icon" href="img/card.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body ondragstart="nameDragStart(event)">
+    <div class="row">
+
+        <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
+            <h2>Player 2</h2>
+        </div>
+        <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
+            <h2>Player 3</h2>
+        </div>
+        <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
+            <h2>Player 4</h2>
+        </div>
+    </div>
+
+    <div class="pool">
+        <img id="card1" src="img/card.png" class="card" draggable="true">
+    </div>
+
+    <button onclick="Start()" id="startBtn">START</button>
+
+    <div ondragover="groupDragOver(event)" ondragleave="groupDragLeave(event)" ondrop="drop(event)" class="hand">
+        <h2>You</h2>
+    </div>
+
+
+
+</body>
+
+</html>
