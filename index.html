@@ -31,7 +31,7 @@
         </div>
 
 
-        <div id="throwPool">
+        <div id="throwPool" ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)">
         </div>
     </div>
 
@@ -41,7 +41,13 @@
         <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
         <button onclick="Start()" id="startBtn">START GAME</button>
     </div>
-
+    <div class="colorPicker">
+        <h2>Pick a color!</h2>
+        <div class="red color" style="background-color: red;"></div>
+        <div class="blue color" style="background-color: blue;"></div>
+        <div class="green color" style="background-color: green;"></div>
+        <div class="yellow color" style="background-color: yellow;"></div>
+    </div>
 
     <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="player hand">
         <h2>You</h2>

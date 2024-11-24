@@ -3,6 +3,7 @@ const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
 const show = ['#pool', '#throwPool'];
 let IMAGES = [];
 const hands = document.querySelectorAll('.hand');
+let colorPick = false;
 
 
 for (let i = 0; i < 14; i++) {
@@ -137,29 +138,52 @@ function DragStart(event) {
 
 function DragOver(event) {
     const group = event.target;
-    if (group.classList.contains('player')) {
-        group.style.backgroundColor = '#ccc';
-    }
+    group.style.filter = 'brightness(0.7)';
+
     event.preventDefault();
 }
 
 function DragLeave(event) {
     const group = event.target;
-    if (!group.classList.contains('hand')) return
-    group.style.backgroundColor = '#a3a3a3';
+    group.style.filter = 'brightness(1)';
 }
 
 function Drop(event) {
     const dropTarget = event.target;
     const card = document.getElementById(event.dataTransfer.getData('text'));
     const pool = document.querySelector('#pool');
+    const throwPool = document.querySelector('#throwPool');
 
-
+    dropTarget.style.filter = 'brightness(1)';
     // GET RANDOM CARD FROM THE TOP OF THE POOL AND GIVE IT TO THE PLAYER
     if (dropTarget.classList.contains('player') && card.id == 'poolCard') {
         pool.lastChild.style.display = 'inline';
-        dropTarget.style.border = '1px solid black';
-        dropTarget.style.backgroundColor = '#a3a3a3';
         dropTarget.appendChild(pool.lastChild);
     }
+
+    // THROW CARD TO THE POOL
+    else if (dropTarget == throwPool.lastChild) {
+        if (canThrow(card, throwPool.lastChild)) {
+            if (colorPick) {
+                colorPick = false;
+                document.querySelector(".colorPicker").style.display = "flex";
+                document.querySelectorAll(".color").forEach(color => {
+                    color.addEventListener('click', () => {
+                        throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
+                        throwPool.lastChild.classList.add(color.classList[0]);
+                        document.querySelector(".colorPicker").style.display = "none";
+                    });
+                });
+            }
+            throwPool.lastChild.remove();
+            throwPool.appendChild(card);
+        }
+    }
+}
+
+function canThrow(card, throwPool) {
+    if (card.classList.contains('wild')) { colorPick = true; return true; }
+    if (card.classList[1] == throwPool.classList[1]) return true;
+    if (card.classList[2] == throwPool.classList[2]) return true;
+    return false;
 }
