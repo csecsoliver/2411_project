@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNO</title>
-    <link rel="shortcut icon" href="img/card.png" type="image/x-icon">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
@@ -26,6 +26,7 @@
     <div class="row2">
 
         <div id="pool">
+            <img id="styleCard" src="img/card.png" class="card" style="display: inline;">
             <img id="poolCard" src="img/card.png" class="card" style="display: inline;" draggable="false">
         </div>
 
@@ -35,7 +36,12 @@
     </div>
 
 
-    <button onclick="Start()" id="startBtn">START</button>
+    <div id="startScreen">
+        <img src="img/logo.png" alt="">
+        <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
+        <button onclick="Start()" id="startBtn">START GAME</button>
+    </div>
+
 
     <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="player hand">
         <h2>You</h2>

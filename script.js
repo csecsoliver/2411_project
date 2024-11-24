@@ -1,6 +1,8 @@
 const colors = ['red', 'blue', 'green', 'yellow'];
 const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
+const show = ['#pool', '#throwPool'];
 let IMAGES = [];
+const hands = document.querySelectorAll('.hand');
 
 
 for (let i = 0; i < 14; i++) {
@@ -9,24 +11,40 @@ for (let i = 0; i < 14; i++) {
     }
 }
 GeneratePool();
-
+show.forEach(element => {
+    document.querySelector(element).style.display = 'none';
+});
+hands.forEach(hand => {
+    hand.style.display = 'none';
+});
 
 function Start() {
-    const players = document.querySelectorAll('.hand');
     const pool = document.querySelector('#pool');
-
+    show.forEach(element => {
+        document.querySelector(element).style.display = 'block';
+    });
+    hands.forEach(hand => {
+        hand.style.display = 'block';
+    });
 
     for (let index = 0; index < 7; index++) {
-        players.forEach(player => {
-            player.appendChild(pool.lastChild);
+        hands.forEach(hand => {
+            if (hand.id == 'pool') return;
+            if (hand.classList.contains('player')) {
+                hand.appendChild(pool.lastChild);
+            }
+            else {
+                pool.lastChild.draggable = false;
+                hand.appendChild(pool.lastChild);
+
+            }
         });
     }
-    document.querySelector('#startBtn').remove();
+    document.querySelector('#startScreen').remove();
 
     document.querySelector('#poolCard').draggable = true;
     pool.lastChild.draggable = false;
     document.querySelector('#throwPool').appendChild(pool.lastChild);
-
 }
 
 function RandomCard(index) {
@@ -120,30 +138,28 @@ function DragStart(event) {
 function DragOver(event) {
     const group = event.target;
     if (group.classList.contains('player')) {
-        group.style.border = '5px dashed black';
         group.style.backgroundColor = '#ccc';
     }
-
-
     event.preventDefault();
 }
 
 function DragLeave(event) {
     const group = event.target;
     if (!group.classList.contains('hand')) return
-    group.style.border = '1px solid black';
     group.style.backgroundColor = '#a3a3a3';
 }
 
 function Drop(event) {
-    const group = event.target;
+    const dropTarget = event.target;
     const card = document.getElementById(event.dataTransfer.getData('text'));
     const pool = document.querySelector('#pool');
 
-    if (group.classList.contains('player') && card.id == 'poolCard') {
+
+    // GET RANDOM CARD FROM THE TOP OF THE POOL AND GIVE IT TO THE PLAYER
+    if (dropTarget.classList.contains('player') && card.id == 'poolCard') {
         pool.lastChild.style.display = 'inline';
-        group.style.border = '1px solid black';
-        group.style.backgroundColor = '#a3a3a3';
-        group.appendChild(pool.lastChild);
+        dropTarget.style.border = '1px solid black';
+        dropTarget.style.backgroundColor = '#a3a3a3';
+        dropTarget.appendChild(pool.lastChild);
     }
 }

@@ -3,22 +3,32 @@
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: rgb(59, 59, 59);
+    background-image: url(img/wallpaper.jpg);
 }
 
 #pool,
 #throwPool {
     width: fit-content;
+    margin: 50px;
 }
 
 #pool .card {
     width: 180px;
     border-radius: 20px;
     display: none;
+    box-shadow: -2px -2px 10px #000000;
 }
 
 #throwPool .card {
     width: 180px;
     border-radius: 30px;
+    cursor: default;
+}
+
+#styleCard {
+    transform: translate(-10%, 3%);
+    z-index: -1;
+    position: absolute;
 }
 
 .row {
@@ -35,7 +45,6 @@ body {
 }
 
 .card {
-    cursor: pointer;
     margin: 4px;
     transition: 0.3s;
     text-align: center;
@@ -44,13 +53,19 @@ body {
     width: 70px;
 }
 
-
-.card:hover {
-    filter: brightness(110%);
-    box-shadow: 2px 2px 20px #777777;
+.player .card,
+#pool .card {
+    cursor: pointer;
 }
 
-.card:active {
+#pool .card:hover,
+.player .card:hover {
+    filter: brightness(110%);
+    box-shadow: -2px -2px 20px #777777;
+}
+
+#pool .card:active,
+.player .card:active {
     filter: brightness(40%);
 
 }
@@ -60,7 +75,7 @@ body {
     min-width: 100px;
     width: fit-content;
     border-radius: 10px;
-    height: 240px;
+    height: 190px;
     margin: 10px auto;
     background-color: #a3a3a3;
     box-shadow: 1px 1px 10px #263b18;
@@ -68,14 +83,16 @@ body {
 }
 
 h2 {
-    text-align: center;
+    margin: 10px auto;
+    width: fit-content;
 }
 
 #startBtn {
     display: block;
     margin: auto;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 25px;
+    padding: 40px;
+    font-size: 30px;
     background-color: #ffffff;
     box-shadow: 2px 2px 20px #263b18;
     cursor: pointer;
@@ -97,4 +114,10 @@ h2 {
     color: white;
     border: 1px solid transparent;
     filter: brightness(40%);
+}
+
+#startScreen img {
+    width: 700px;
+    margin: 100px auto;
+    display: block;
 }
