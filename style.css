@@ -25,7 +25,7 @@ body {
     cursor: default;
 }
 
-#styleCard {
+.styleCard {
     transform: translate(-10%, 3%);
     z-index: -1;
     position: absolute;

@@ -49,7 +49,7 @@ function Start() {
     document.querySelector('#throwPool').appendChild(pool.lastChild);
 }
 
-function RandomCard(index) {
+function RandomCard(id) {
     let card = document.createElement('img');
     let classValue = '';
     let IMAGE
@@ -104,7 +104,7 @@ function RandomCard(index) {
             classValue = value;
             break;
     }
-    card.id = index;
+    card.id = id;
     card.classList.add('card');
 
     // handle +4
@@ -184,8 +184,10 @@ function Drop(event) {
                     });
                 });
             }
+            document.querySelector('#styleCard').src = throwPool.lastChild.src;
             throwPool.lastChild.remove();
             card.draggable = false;
+
             throwPool.appendChild(card);
         }
     }
