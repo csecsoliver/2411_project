@@ -1,5 +1,5 @@
-const colors = ['red', 'blue', 'green', 'yellow'];
-const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
+const colors = ['red', 'yellow', 'green', 'blue'];
+const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'skip', 'reverse', '+2', 'wild'];
 const show = ['#pool', '#throwPool'];
 let IMAGES = [];
 const hands = document.querySelectorAll('.hand');
@@ -51,70 +51,52 @@ function Start() {
 
 function RandomCard(id) {
     let card = document.createElement('img');
-    let classValue = '';
-    let IMAGE
-    while (true) {
-        color = colors[Math.floor(Math.random() * colors.length)];
-        value = values[Math.floor(Math.random() * values.length)];
+    let random = IMAGES[Math.floor(Math.random() * IMAGES.length)];
+    if (random.length == 3) {
+        value = Number(random[0] + random[1]);
+        color = Number(random[2]);
 
-        IMAGE = value;
+    } else {
+        value = Number(random[0]);
+        color = Number(random[1]);
+    }
 
-        switch (color) {
-            case 'red':
-                IMAGE += ['0', '4'][Math.floor(Math.random() * 2)];
-                break;
-            case 'blue':
-                IMAGE += ['3', '7'][Math.floor(Math.random() * 2)];
-                break;
-            case 'green':
-                IMAGE += ['2', '6'][Math.floor(Math.random() * 2)];
-                break;
-            case 'yellow':
-                IMAGE += ['1', '5'][Math.floor(Math.random() * 2)];
-                break;
-        }
+    switch (color) {
+        case 4:
+            color = 0;
+            break;
+        case 5:
+            color = 1;
+            break;
+        case 6:
+            color = 2;
+            break;
+        case 7:
+            color = 3;
+            break;
+    }
 
-        if (IMAGES.includes(IMAGE)) {
-            card.src = 'img/cards/' + IMAGE + '.png';
-            for (let index = 0; index < IMAGES.length; index++) {
-                if (IMAGES[index] == IMAGE) {
-                    IMAGES.splice(index, 1);
-                    break;
-                }
+
+    if (IMAGES.includes(random)) {
+        card.src = 'img/cards/' + random + '.png';
+        for (let index = 0; index < IMAGES.length; index++) {
+            if (IMAGES[index] == random) {
+                IMAGES.splice(index, 1);
+                break;
             }
-            break
         }
-
-
     }
-    switch (value) {
-        case '10':
-            classValue = 'skip';
-            break;
-        case '11':
-            classValue = 'reverse';
-            break;
-        case '12':
-            classValue = '+2';
-            break;
-        case '13':
-            classValue = 'wild';
-            break;
-        default:
-            classValue = value;
-            break;
-    }
+
     card.id = id;
     card.classList.add('card');
 
     // handle +4
-    if (IMAGE == '134' || IMAGE == '135' || IMAGE == '136' || IMAGE == '137') {
+    if (random == '134' || random == '135' || random == '136' || random == '137') {
         card.classList.add('+4');
     } else {
-        card.classList.add(classValue == "wild" ? classValue : color);
-        card.classList.add(classValue);
+        card.classList.add(values[value] == "wild" ? "wild" : colors[color]);
+        card.classList.add(values[value]);
     }
-
     card.draggable = true;
 
     return card;
