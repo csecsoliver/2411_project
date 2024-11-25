@@ -35,6 +35,7 @@ function Start() {
                 hand.appendChild(pool.lastChild);
             }
             else {
+                pool.lastChild.src = 'img/card.png';
                 pool.lastChild.draggable = false;
                 hand.appendChild(pool.lastChild);
 
@@ -51,11 +52,12 @@ function Start() {
 function RandomCard(index) {
     let card = document.createElement('img');
     let classValue = '';
+    let IMAGE
     while (true) {
         color = colors[Math.floor(Math.random() * colors.length)];
         value = values[Math.floor(Math.random() * values.length)];
 
-        let IMAGE = value;
+        IMAGE = value;
 
         switch (color) {
             case 'red':
@@ -104,8 +106,15 @@ function RandomCard(index) {
     }
     card.id = index;
     card.classList.add('card');
-    card.classList.add(classValue == "wild" ? classValue : color);
-    card.classList.add(classValue);
+
+    // handle +4
+    if (IMAGE == '134' || IMAGE == '135' || IMAGE == '136' || IMAGE == '137') {
+        card.classList.add('+4');
+    } else {
+        card.classList.add(classValue == "wild" ? classValue : color);
+        card.classList.add(classValue);
+    }
+
     card.draggable = true;
 
     return card;
@@ -166,23 +175,24 @@ function Drop(event) {
         if (canThrow(card, throwPool.lastChild)) {
             if (colorPick) {
                 colorPick = false;
-                document.querySelector(".colorPicker").style.display = "flex";
+                document.querySelector(".colorPicker").style.scale = "1";
                 document.querySelectorAll(".color").forEach(color => {
                     color.addEventListener('click', () => {
                         throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
                         throwPool.lastChild.classList.add(color.classList[0]);
-                        document.querySelector(".colorPicker").style.display = "none";
+                        document.querySelector(".colorPicker").style.scale = "0";
                     });
                 });
             }
             throwPool.lastChild.remove();
+            card.draggable = false;
             throwPool.appendChild(card);
         }
     }
 }
 
 function canThrow(card, throwPool) {
-    if (card.classList.contains('wild')) { colorPick = true; return true; }
+    if (card.classList.contains('wild') || card.classList.contains('+4')) { colorPick = true; return true; }
     if (card.classList[1] == throwPool.classList[1]) return true;
     if (card.classList[2] == throwPool.classList[2]) return true;
     return false;
