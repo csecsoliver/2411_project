@@ -35,7 +35,6 @@ function Start() {
     document.querySelector('#startScreen').remove();
 
     document.querySelector('#poolCard').draggable = true;
-    pool.lastChild.draggable = false;
 }
 
 function RandomCard(id) {
@@ -106,6 +105,7 @@ function Main() {
         hand.style.display = 'none';
     });
 
+    pool.lastChild.draggable = false;
     document.querySelector('#throwPool').appendChild(pool.lastChild);
 
 }
