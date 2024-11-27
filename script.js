@@ -128,26 +128,6 @@ function Main() {
 
 
 
-function NextPlayer(currentPlayer, reverse = false) {
-    let nextNum = Number(currentPlayer.id.slice(-1))
-    if (reverse) {
-        nextNum -= 1;
-    }
-    else {
-        nextNum += 1;
-    }
-
-    if (nextNum > hands.length) nextNum = 1;
-    if (nextNum < 1) nextNum = hands.length;
-    currentPlayer = document.querySelector(`#player${nextNum}`);
-    return currentPlayer;
-}
-
-
-
-
-
-
 
 // DRAG AND DROP
 function DragStart(event) {
@@ -179,23 +159,7 @@ function Drop(event) {
 
     // THROW CARD TO THE POOL
     else if (dropTarget == throwPool.lastChild) {
-        if (canThrow(card, throwPool.lastChild)) {
-            if (colorPick) {
-                colorPick = false;
-                document.querySelector(".colorPicker").style.scale = "1";
-                document.querySelectorAll(".color").forEach(color => {
-                    color.addEventListener('click', () => {
-                        throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
-                        throwPool.lastChild.classList.add(color.classList[0]);
-                        document.querySelector(".colorPicker").style.scale = "0";
-                    });
-                });
-            }
-            document.querySelector('#styleCard').src = throwPool.lastChild.src;
-            throwPool.lastChild.remove();
-            card.draggable = false;
-            throwPool.appendChild(card);
-        }
+        ThrowCard(card);
     }
 }
 
@@ -205,3 +169,65 @@ function canThrow(card, throwPool) {
     if (card.classList[2] == throwPool.classList[2]) return true;
     return false;
 }
+
+
+
+
+
+
+
+
+// WORK IN PROGRESS
+
+
+function ThrowCard(card) {
+    if (canThrow(card, throwPool.lastChild)) {
+        if (colorPick) {
+            colorPick = false;
+            document.querySelector(".colorPicker").style.scale = "1";
+            document.querySelectorAll(".color").forEach(color => {
+                color.addEventListener('click', () => {
+                    throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
+                    throwPool.lastChild.classList.add(color.classList[0]);
+                    document.querySelector(".colorPicker").style.scale = "0";
+                });
+            });
+        }
+        document.querySelector('#styleCard').src = throwPool.lastChild.src;
+        throwPool.lastChild.remove();
+        card.draggable = false;
+        throwPool.appendChild(card);
+    }
+
+    NextTurn();
+}
+
+
+function NextTurn() {
+    if (lastPlayer == player) {
+        currentPlayer = CurrentPlayer();
+        player.children.forEach(card => {
+            card.draggable = false;
+        })
+        setTimeout(() => {
+            ThrowCard(RequestCard(currentPlayer.children, throwPool.lastChild));
+        }, 1000);
+    }
+}
+
+
+
+function CurrentPlayer(reverse = false) {
+    let nextNum = Number(lastPlayer.id.slice(-1))
+    if (reverse) {
+        nextNum -= 1;
+    }
+    else {
+        nextNum += 1;
+    }
+
+    if (nextNum > hands.length) nextNum = 1;
+    if (nextNum < 1) nextNum = hands.length;
+    return document.querySelector(`#player${nextNum}`);
+}
+
