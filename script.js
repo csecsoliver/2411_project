@@ -52,14 +52,8 @@ function Start() {
 function RandomCard(id) {
     let card = document.createElement('img');
     let random = IMAGES[Math.floor(Math.random() * IMAGES.length)];
-    if (random.length == 3) {
-        value = Number(random[0] + random[1]);
-        color = Number(random[2]);
-
-    } else {
-        value = Number(random[0]);
-        color = Number(random[1]);
-    }
+    let color = Number(random.slice(-1));
+    let value = Number(random.slice(0, -1));
 
     switch (color) {
         case 4:
