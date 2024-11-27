@@ -2,25 +2,15 @@ const colors = ['red', 'yellow', 'green', 'blue'];
 const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'skip', 'reverse', '+2', 'wild'];
 const show = ['#pool', '#throwPool'];
 let IMAGES = [];
+const throwPool = document.querySelector('#throwPool');
+const pool = document.querySelector('#pool');
 const hands = document.querySelectorAll('.hand');
 let colorPick = false;
 
 
-for (let i = 0; i < 14; i++) {
-    for (let j = 0; j < 8; j++) {
-        IMAGES.push('' + i + j);
-    }
-}
-GeneratePool();
-show.forEach(element => {
-    document.querySelector(element).style.display = 'none';
-});
-hands.forEach(hand => {
-    hand.style.display = 'none';
-});
+Main();
 
 function Start() {
-    const pool = document.querySelector('#pool');
     show.forEach(element => {
         document.querySelector(element).style.display = 'block';
     });
@@ -46,7 +36,6 @@ function Start() {
 
     document.querySelector('#poolCard').draggable = true;
     pool.lastChild.draggable = false;
-    document.querySelector('#throwPool').appendChild(pool.lastChild);
 }
 
 function RandomCard(id) {
@@ -97,21 +86,29 @@ function RandomCard(id) {
 }
 
 
-function GeneratePool() {
-    const pool = document.querySelector('#pool');
+function Main() {
+
+    for (let i = 0; i < 14; i++) {
+        for (let j = 0; j < 8; j++) {
+            IMAGES.push('' + i + j);
+        }
+    }
+
+
     for (let index = 0; index < IMAGES.length; index++) {
         pool.appendChild(RandomCard('card' + index));
     }
+
+    show.forEach(element => {
+        document.querySelector(element).style.display = 'none';
+    });
+    hands.forEach(hand => {
+        hand.style.display = 'none';
+    });
+
+    document.querySelector('#throwPool').appendChild(pool.lastChild);
+
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -136,8 +133,6 @@ function DragLeave(event) {
 function Drop(event) {
     const dropTarget = event.target;
     const card = document.getElementById(event.dataTransfer.getData('text'));
-    const pool = document.querySelector('#pool');
-    const throwPool = document.querySelector('#throwPool');
 
     dropTarget.style.filter = 'brightness(1)';
     // GET RANDOM CARD FROM THE TOP OF THE POOL AND GIVE IT TO THE PLAYER
