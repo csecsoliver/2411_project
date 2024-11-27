@@ -8,6 +8,7 @@ const player = document.querySelector('.player');
 
 let colorPick = false;
 let IMAGES = [];
+let lastPlayer = player;
 
 
 Main();
@@ -107,8 +108,18 @@ function Main() {
         hand.style.display = 'none';
     });
 
-    pool.lastChild.draggable = false;
-    document.querySelector('#throwPool').appendChild(pool.lastChild);
+
+    // append to throw pool only if it is not a wild card
+    for (let index = 2; index < pool.children.length; index++) {
+        card = pool.children[index];
+        if (!card.classList.contains('wild') && !card.classList.contains('+4')) {
+            throwPool.appendChild(card);
+            card.draggable = false;
+            break;
+        }
+
+    }
+
 
 }
 
@@ -126,8 +137,8 @@ function NextPlayer(currentPlayer, reverse = false) {
         nextNum += 1;
     }
 
-    if (nextNum == hands.length+1) nextNum = 1;
-    if (nextNum == 0) nextNum = hands.length;
+    if (nextNum > hands.length) nextNum = 1;
+    if (nextNum < 1) nextNum = hands.length;
     currentPlayer = document.querySelector(`#player${nextNum}`);
     return currentPlayer;
 }
@@ -183,7 +194,6 @@ function Drop(event) {
             document.querySelector('#styleCard').src = throwPool.lastChild.src;
             throwPool.lastChild.remove();
             card.draggable = false;
-
             throwPool.appendChild(card);
         }
     }
