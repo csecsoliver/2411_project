@@ -4,6 +4,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     background-color: rgb(59, 59, 59);
     background-image: url(img/wallpaper.jpg);
+    user-select: none;
 }
 
 #pool,

@@ -13,13 +13,13 @@
 <body ondragstart="DragStart(event)" >
     <div class="row">
 
-        <div class="hand">
+        <div class="hand" id="player2">
             <h2>Machine 2</h2>
         </div>
-        <div class="hand">
+        <div class="hand" id="player3">
             <h2>Machine 3</h2>
         </div>
-        <div class="hand">
+        <div class="hand" id="player4">
             <h2>Machine 4</h2>
         </div>
     </div>
@@ -50,7 +50,7 @@
         <div class="yellow color" style="background-color: rgb(255, 174, 0);"></div>
     </div>
 
-    <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="player hand">
+    <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="player hand" id="player1">
         <h2>You</h2>
     </div>
 

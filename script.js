@@ -1,11 +1,13 @@
 const colors = ['red', 'yellow', 'green', 'blue'];
 const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'skip', 'reverse', '+2', 'wild'];
 const show = ['#pool', '#throwPool'];
-let IMAGES = [];
 const throwPool = document.querySelector('#throwPool');
 const pool = document.querySelector('#pool');
 const hands = document.querySelectorAll('.hand');
+const player = document.querySelector('.player');
+
 let colorPick = false;
+let IMAGES = [];
 
 
 Main();
@@ -109,6 +111,29 @@ function Main() {
     document.querySelector('#throwPool').appendChild(pool.lastChild);
 
 }
+
+
+
+
+
+
+function NextPlayer(currentPlayer, reverse = false) {
+    let nextNum = Number(currentPlayer.id.slice(-1))
+    if (reverse) {
+        nextNum -= 1;
+    }
+    else {
+        nextNum += 1;
+    }
+
+    if (nextNum == hands.length+1) nextNum = 1;
+    if (nextNum == 0) nextNum = hands.length;
+    currentPlayer = document.querySelector(`#player${nextNum}`);
+    return currentPlayer;
+}
+
+
+
 
 
 
