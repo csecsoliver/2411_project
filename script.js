@@ -50,7 +50,6 @@ function StartGame() {
                 pool.lastChild.draggable = false;
                 pool.lastChild.src = 'img/card.png';
                 hand.appendChild(pool.lastChild);
-
             }
         });
     }
@@ -58,6 +57,24 @@ function StartGame() {
     document.querySelector('#FIGMA').remove();
 
     document.querySelector('#poolCard').draggable = true;
+    Highlight()
+}
+
+function Highlight(bool = true) {
+    document.querySelectorAll(".player .card").forEach(element => {
+        element.classList.remove("throwable")
+    });
+    if (bool) {
+        document.querySelectorAll(".player .card").forEach(element => {
+            if (canThrow(element, throwPool.lastChild)) element.classList.add("throwable")
+        });
+
+    } else {
+        document.querySelectorAll(".player .card").forEach(element => {
+            if (canThrow(element, throwPool.lastChild)) element.classList.remove("throwable")
+        });
+    }
+    colorPick = false
 }
 
 function RandomCard(id) {
@@ -175,8 +192,9 @@ function Drop(event) {
     if (dropTarget.classList.contains('canPull') && card.id == 'poolCard') {
         pool.lastChild.style.display = 'inline';
         document.querySelector(".canPull").classList.remove("canPull")
-        ShowTurnBtn(true)
         dropTarget.appendChild(pool.lastChild);
+        ShowTurnBtn(true)
+        Highlight()
     }
 
     // THROW CARD TO THE POOL
@@ -213,6 +231,7 @@ function ThrowCard(card) {
                         throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
                         throwPool.lastChild.classList.add(color.classList[0]);
                         document.querySelector(".colorPicker").style.scale = "0";
+                        Highlight()
                     });
                 });
 
@@ -221,8 +240,10 @@ function ThrowCard(card) {
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
         throwPool.lastChild.remove();
         card.draggable = false;
+        card.classList.remove("throwable")
         throwPool.appendChild(card);
         ShowTurnBtn(true)
+        Highlight()
     }
 
 
@@ -270,8 +291,8 @@ function NextTurn(topCard) {
     if (nextPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
             element.draggable = true
-
         });
+        Highlight()
     }
 
     lastPlayer.classList.remove("turn")

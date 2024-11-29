@@ -185,6 +185,20 @@ h2 {
     }
 }
 
+@keyframes border3 {
+    0% {
+        border: 4px solid black;
+    }
+
+    50% {
+        border: 4px solid transparent;
+    }
+
+    100% {
+        border: 4px solid black;
+    }
+}
+
 .colorPicker {
     justify-content: center;
     align-items: center;
@@ -216,4 +230,13 @@ h2 {
     animation: border2 1.4s infinite;
     background-color: rgb(92, 92, 231);
     color: white;
+}
+
+.throwable {
+    animation: border3 2.2s infinite;
+}
+
+.player .card {
+    border: 4px solid transparent;
+    border-radius: 15px;
 }
