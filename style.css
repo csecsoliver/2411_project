@@ -7,6 +7,13 @@ body {
     user-select: none;
 }
 
+#FIGMA {
+    width: 90%;
+    position: absolute;
+    z-index: -100;
+    left: 3%;
+}
+
 #pool,
 #throwPool {
     width: fit-content;

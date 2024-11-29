@@ -55,6 +55,7 @@ function StartGame() {
         });
     }
     document.querySelector('#startScreen').remove();
+    document.querySelector('#FIGMA').remove();
 
     document.querySelector('#poolCard').draggable = true;
 }
