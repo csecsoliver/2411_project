@@ -5,15 +5,34 @@ const throwPool = document.querySelector('#throwPool');
 const pool = document.querySelector('#pool');
 const hands = document.querySelectorAll('.hand');
 const player = document.querySelector('.player');
+const turnBtn = document.querySelector('#turnBtn')
 
+let lastPlayer = document.querySelector('.turn')
+let gameReversed = false
 let colorPick = false;
 let IMAGES = [];
-let lastPlayer = player;
 
 
 Main();
 
-function Start() {
+turnBtn.addEventListener("click", () => {
+    NextTurn(throwPool.lastChild.classList)
+})
+
+function ShowTurnBtn(bool) {
+    if (bool) {
+        turnBtn.disabled = false
+        turnBtn.style.cursor = "pointer"
+        turnBtn.style.opacity = 1
+    } else {
+        turnBtn.style.opacity = 0
+        turnBtn.disabled = true
+        turnBtn.style.cursor = "default"
+    }
+}
+
+function StartGame() {
+    turnBtn.style.display = "block"
     show.forEach(element => {
         document.querySelector(element).style.display = 'block';
     });
@@ -28,8 +47,8 @@ function Start() {
                 hand.appendChild(pool.lastChild);
             }
             else {
-                pool.lastChild.src = 'img/card.png';
                 pool.lastChild.draggable = false;
+                pool.lastChild.src = 'img/card.png';
                 hand.appendChild(pool.lastChild);
 
             }
@@ -82,7 +101,7 @@ function RandomCard(id) {
         card.classList.add(values[value] == "wild" ? "wild" : colors[color]);
         card.classList.add(values[value]);
     }
-    card.draggable = true;
+    card.draggable = true
 
     return card;
 }
@@ -152,8 +171,10 @@ function Drop(event) {
 
     dropTarget.style.filter = 'brightness(1)';
     // GET RANDOM CARD FROM THE TOP OF THE POOL AND GIVE IT TO THE PLAYER
-    if (dropTarget.classList.contains('player') && card.id == 'poolCard') {
+    if (dropTarget.classList.contains('canPull') && card.id == 'poolCard') {
         pool.lastChild.style.display = 'inline';
+        document.querySelector(".canPull").classList.remove("canPull")
+        ShowTurnBtn(true)
         dropTarget.appendChild(pool.lastChild);
     }
 
@@ -182,52 +203,80 @@ function canThrow(card, throwPool) {
 
 function ThrowCard(card) {
     if (canThrow(card, throwPool.lastChild)) {
-        if (colorPick) {
-            colorPick = false;
-            document.querySelector(".colorPicker").style.scale = "1";
-            document.querySelectorAll(".color").forEach(color => {
-                color.addEventListener('click', () => {
-                    throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
-                    throwPool.lastChild.classList.add(color.classList[0]);
-                    document.querySelector(".colorPicker").style.scale = "0";
+        if (player.classList.contains("turn")) {
+            if (colorPick) {
+                colorPick = false;
+                document.querySelector(".colorPicker").style.scale = "1";
+                document.querySelectorAll(".color").forEach(color => {
+                    color.addEventListener('click', () => {
+                        throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
+                        throwPool.lastChild.classList.add(color.classList[0]);
+                        document.querySelector(".colorPicker").style.scale = "0";
+                    });
                 });
-            });
+
+            }
         }
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
         throwPool.lastChild.remove();
         card.draggable = false;
         throwPool.appendChild(card);
+        ShowTurnBtn(true)
     }
 
-    NextTurn();
-}
 
-
-function NextTurn() {
-    if (lastPlayer == player) {
-        currentPlayer = CurrentPlayer();
-        player.children.forEach(card => {
-            card.draggable = false;
-        })
-        setTimeout(() => {
-            ThrowCard(RequestCard(currentPlayer.children, throwPool.lastChild));
-        }, 1000);
-    }
 }
 
 
 
-function CurrentPlayer(reverse = false) {
+function NextTurn(topCard) {
+    lastPlayer = document.querySelector('.turn')
+    let addition = 1
     let nextNum = Number(lastPlayer.id.slice(-1))
-    if (reverse) {
-        nextNum -= 1;
+
+    if (lastPlayer == player) {
+        document.querySelectorAll(".player .card").forEach(element => {
+            element.draggable = false
+        });
+    }
+
+    if (!topCard.contains("lookedAt")) {
+        switch (topCard[2]) {
+            case "reverse":
+                gameReversed = !gameReversed
+
+                break
+            case "skip":
+                addition = 2
+                break
+        }
+        topCard.add("lookedAt")
+
+    }
+    if (gameReversed) {
+        nextNum -= addition;
     }
     else {
-        nextNum += 1;
+        nextNum += addition;
     }
+
+
 
     if (nextNum > hands.length) nextNum = 1;
     if (nextNum < 1) nextNum = hands.length;
-    return document.querySelector(`#player${nextNum}`);
-}
+    let nextPlayer = document.querySelector(`#player${nextNum}`)
 
+
+    if (nextPlayer == player) {
+        document.querySelectorAll(".player .card").forEach(element => {
+            element.draggable = true
+
+        });
+    }
+
+    lastPlayer.classList.remove("turn")
+    lastPlayer.classList.remove("canPull")
+    nextPlayer.classList.add("turn");
+    nextPlayer.classList.add("canPull");
+    //ShowTurnBtn(false)
+}
