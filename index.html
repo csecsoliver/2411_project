@@ -10,17 +10,19 @@
     <script src="script.js" defer></script>
 </head>
 <!-- oncontextmenu="return false" -->
-<body ondragstart="DragStart(event)" >
+
+<body ondragstart="DragStart(event)">
+    <img src="img/image.png" id="FIGMA" alt="">
     <div class="row">
 
         <div class="hand" id="player2">
-            <h2>Machine 2</h2>
+            <h2>Machine 1</h2>
         </div>
         <div class="hand" id="player3">
-            <h2>Machine 3</h2>
+            <h2>Machine 2</h2>
         </div>
         <div class="hand" id="player4">
-            <h2>Machine 4</h2>
+            <h2>Machine 3</h2>
         </div>
     </div>
     <div class="row2">
@@ -29,6 +31,7 @@
             <img src="img/card.png" class="card styleCard" style="display: inline;">
             <img id="poolCard" src="img/card.png" class="card" style="display: inline;" draggable="false">
         </div>
+        <button id="turnBtn" disabled>End Turn</button>
 
 
         <div id="throwPool" ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)">
@@ -40,20 +43,20 @@
     <div id="startScreen">
         <img src="img/logo.png" alt="">
         <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
-        <button onclick="Start()" id="startBtn">START GAME</button>
+        <button onclick="StartGame()" id="startBtn">START GAME</button>
     </div>
     <div class="colorPicker">
         <h2>Pick a color!</h2>
         <div class="red color" style="background-color: red;"></div>
-        <div class="blue color" style="background-color: blue;"></div>
+        <div class="blue color" style="background-color: rgb(80, 80, 201);"></div>
         <div class="green color" style="background-color: green;"></div>
         <div class="yellow color" style="background-color: rgb(255, 174, 0);"></div>
     </div>
 
-    <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)" class="player hand" id="player1">
+    <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)"
+        class="player hand turn canPull" id="player1">
         <h2>You</h2>
     </div>
-
 
 
 </body>
