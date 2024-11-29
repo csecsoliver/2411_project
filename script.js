@@ -261,9 +261,8 @@ function NextTurn(topCard) {
     }
 
 
-
-    if (nextNum > hands.length) nextNum = 1;
-    if (nextNum < 1) nextNum = hands.length;
+    if (nextNum > hands.length) nextNum = addition == 2 ? 2 : 1;
+    if (nextNum < 1) nextNum = addition == 2 ? hands.length - 1 : hands.length;
     let nextPlayer = document.querySelector(`#player${nextNum}`)
 
 
