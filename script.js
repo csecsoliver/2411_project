@@ -15,15 +15,12 @@ let IMAGES = [];
 
 Main();
 
-turnBtn.addEventListener("click", () => {
-    NextTurn(throwPool.lastChild.classList)
-})
 
-function ShowTurnBtn(bool) {
+function ShowTurnBtn(bool = true) {
     if (bool) {
+        turnBtn.style.opacity = 1
         turnBtn.disabled = false
         turnBtn.style.cursor = "pointer"
-        turnBtn.style.opacity = 1
     } else {
         turnBtn.style.opacity = 0
         turnBtn.disabled = true
@@ -42,7 +39,6 @@ function StartGame() {
 
     for (let index = 0; index < 7; index++) {
         hands.forEach(hand => {
-            if (hand.id == 'pool') return;
             if (hand.classList.contains('player')) {
                 hand.appendChild(pool.lastChild);
             }
@@ -60,20 +56,11 @@ function StartGame() {
     Highlight()
 }
 
-function Highlight(bool = true) {
+function Highlight() {
     document.querySelectorAll(".player .card").forEach(element => {
         element.classList.remove("throwable")
+        if (canThrow(element, throwPool.lastChild)) element.classList.add("throwable")
     });
-    if (bool) {
-        document.querySelectorAll(".player .card").forEach(element => {
-            if (canThrow(element, throwPool.lastChild)) element.classList.add("throwable")
-        });
-
-    } else {
-        document.querySelectorAll(".player .card").forEach(element => {
-            if (canThrow(element, throwPool.lastChild)) element.classList.remove("throwable")
-        });
-    }
     colorPick = false
 }
 
@@ -193,7 +180,7 @@ function Drop(event) {
         pool.lastChild.style.display = 'inline';
         document.querySelector(".canPull").classList.remove("canPull")
         dropTarget.appendChild(pool.lastChild);
-        ShowTurnBtn(true)
+        ShowTurnBtn()
         Highlight()
     }
 
@@ -216,8 +203,6 @@ function canThrow(card, throwPool) {
 
 
 
-
-// WORK IN PROGRESS
 
 
 function ThrowCard(card) {
@@ -242,17 +227,16 @@ function ThrowCard(card) {
         card.draggable = false;
         card.classList.remove("throwable")
         throwPool.appendChild(card);
-        ShowTurnBtn(true)
+        ShowTurnBtn()
         Highlight()
     }
-
-
 }
 
 
 
-function NextTurn(topCard) {
+function NextTurn() {
     lastPlayer = document.querySelector('.turn')
+    let topCard = throwPool.lastChild.classList
     let addition = 1
     let nextNum = Number(lastPlayer.id.slice(-1))
 

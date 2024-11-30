@@ -5,13 +5,14 @@ body {
     background-color: rgb(59, 59, 59);
     background-image: url(img/wallpaper.jpg);
     user-select: none;
+    overflow: hidden;
 }
 
 #FIGMA {
-    width: 90%;
+    width: 80%;
     position: absolute;
     z-index: -100;
-    left: 3%;
+    left: 10%;
 }
 
 #pool,
