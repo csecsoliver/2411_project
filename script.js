@@ -7,6 +7,7 @@ const hands = document.querySelectorAll('.hand');
 const player = document.querySelector('.player');
 const turnBtn = document.querySelector('#turnBtn')
 
+let threw = false
 let thrownCards = []
 let lastPlayer = document.querySelector('.turn')
 let gameReversed = false
@@ -62,7 +63,10 @@ function StartGame() {
 function Highlight() {
     document.querySelectorAll(".player .card").forEach(element => {
         element.classList.remove("throwable")
-        if (canThrow(element, throwPool.lastChild)) element.classList.add("throwable")
+        if (canThrow(element, throwPool.lastChild)) {
+            element.classList.add("throwable")
+            document.querySelector(".turn").classList.remove("canPull")
+        }
     });
     colorPick = false
 }
@@ -194,9 +198,16 @@ function Drop(event) {
 }
 
 function canThrow(card, throwPool) {
-    if (card.classList.contains('wild') || card.classList.contains('+4')) { colorPick = true; return true; }
-    if (card.classList[1] == throwPool.classList[1]) return true;
-    if (card.classList[2] == throwPool.classList[2]) return true;
+    if (!threw) {
+        if (card.classList.contains('wild') || card.classList.contains('+4')) { colorPick = true; return true; }
+        if (card.classList[1] == throwPool.classList[1]) return true;
+        if (card.classList[2] == throwPool.classList[2]) return true;
+
+    } else {
+        if ((card.classList[1] == throwPool.classList[1]) && (card.classList[2] == throwPool.classList[2])) return true
+        if (card.classList.contains("wild") && throwPool.classList.contains("wild")) return true
+        if (card.classList.contains("+4") && throwPool.classList.contains("+4")) return true
+    }
     return false;
 }
 
@@ -229,16 +240,16 @@ function ThrowCard(card) {
             thrownCards[0] = card
         } else {
             thrownCards.push(card)
-
         }
 
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
         card.draggable = false;
         card.classList.remove("throwable")
-        
+
         throwPool.lastChild.remove();
         throwPool.appendChild(card);
 
+        threw = true
         ShowTurnBtn()
         Highlight()
     }
@@ -251,7 +262,7 @@ function NextTurn() {
     let topCard = thrownCards.at(-1)
     let addition = 1
     let nextNum = Number(lastPlayer.id.slice(-1))
-    let counters = {"reverse": 0, "skip": 0, "plus2": 0, "plus4": 0}
+    let counters = { "reverse": 0, "skip": 0, "plus2": 0, "plus4": 0 }
 
     if (lastPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
@@ -293,18 +304,20 @@ function NextTurn() {
     let nextPlayer = document.querySelector(`#player${nextNum}`)
 
 
-    if (nextPlayer == player) {
-        document.querySelectorAll(".player .card").forEach(element => {
-            element.draggable = true
-        });
-        Highlight()
-    }
 
     lastPlayer.classList.remove("turn")
     lastPlayer.classList.remove("canPull")
     nextPlayer.classList.add("turn");
     nextPlayer.classList.add("canPull");
     throwPool.lastChild.classList.add("default")
+    threw = false
     thrownCards = [throwPool.lastChild]
+
+    if (nextPlayer == player) {
+        document.querySelectorAll(".player .card").forEach(element => {
+            element.draggable = true
+        });
+        Highlight()
+    }
     //ShowTurnBtn(false)
 }
