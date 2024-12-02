@@ -7,6 +7,7 @@ const hands = document.querySelectorAll('.hand');
 const player = document.querySelector('.player');
 const turnBtn = document.querySelector('#turnBtn')
 
+let thrownCards = []
 let lastPlayer = document.querySelector('.turn')
 let gameReversed = false
 let colorPick = false;
@@ -53,6 +54,8 @@ function StartGame() {
     document.querySelector('#FIGMA').remove();
 
     document.querySelector('#poolCard').draggable = true;
+    throwPool.lastChild.classList.add("default")
+    thrownCards = [throwPool.lastChild]
     Highlight()
 }
 
@@ -222,11 +225,20 @@ function ThrowCard(card) {
 
             }
         }
+        if (thrownCards[0].classList.contains("default")) {
+            thrownCards[0] = card
+        } else {
+            thrownCards.push(card)
+
+        }
+
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
-        throwPool.lastChild.remove();
         card.draggable = false;
         card.classList.remove("throwable")
+        
+        throwPool.lastChild.remove();
         throwPool.appendChild(card);
+
         ShowTurnBtn()
         Highlight()
     }
@@ -236,9 +248,10 @@ function ThrowCard(card) {
 
 function NextTurn() {
     lastPlayer = document.querySelector('.turn')
-    let topCard = throwPool.lastChild.classList
+    let topCard = thrownCards.at(-1)
     let addition = 1
     let nextNum = Number(lastPlayer.id.slice(-1))
+    let counters = {"reverse": 0, "skip": 0, "plus2": 0, "plus4": 0}
 
     if (lastPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
@@ -246,19 +259,27 @@ function NextTurn() {
         });
     }
 
-    if (!topCard.contains("lookedAt")) {
-        switch (topCard[2]) {
-            case "reverse":
-                gameReversed = !gameReversed
 
-                break
-            case "skip":
-                addition = 2
-                break
-        }
-        topCard.add("lookedAt")
+
+    if (!topCard.classList.contains("lookedAt")) {
+        thrownCards.forEach(element => {
+            if (element.classList.contains("reverse")) counters["reverse"]++
+            if (element.classList.contains("skip")) counters["skip"]++
+            if (element.classList.contains("+2")) counters["plus2"]++
+            if (element.classList.contains("+4")) counters["plus4"]++
+        });
+
+        if (counters["reverse"] % 2 != 0) gameReversed = !gameReversed
+        addition += counters["skip"]
+
+        topCard.classList.add("lookedAt")
 
     }
+
+
+
+
+
     if (gameReversed) {
         nextNum -= addition;
     }
@@ -283,5 +304,7 @@ function NextTurn() {
     lastPlayer.classList.remove("canPull")
     nextPlayer.classList.add("turn");
     nextPlayer.classList.add("canPull");
+    throwPool.lastChild.classList.add("default")
+    thrownCards = [throwPool.lastChild]
     //ShowTurnBtn(false)
 }
