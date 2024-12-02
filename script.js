@@ -215,10 +215,6 @@ function canThrow(card, throwPool) {
 
 
 
-
-
-
-
 function ThrowCard(card) {
     if (canThrow(card, throwPool.lastChild)) {
         if (player.classList.contains("turn")) {
@@ -227,13 +223,14 @@ function ThrowCard(card) {
                 document.querySelector(".colorPicker").style.scale = "1";
                 document.querySelectorAll(".color").forEach(color => {
                     color.addEventListener('click', () => {
-                        throwPool.lastChild.classList.remove(throwPool.lastChild.classList[1]);
+                        const type = throwPool.lastChild.classList[1]
+                        throwPool.lastChild.classList.remove(type);
                         throwPool.lastChild.classList.add(color.classList[0]);
+                        throwPool.lastChild.classList.add(type)
                         document.querySelector(".colorPicker").style.scale = "0";
                         Highlight()
                     });
                 });
-
             }
         }
         if (thrownCards[0].classList.contains("default")) {
