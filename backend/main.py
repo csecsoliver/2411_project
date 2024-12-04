@@ -1,4 +1,6 @@
 from bottle import route, run, get, post, request, template
+import time
+
 
 @route('/getform')
 def hello():
@@ -8,6 +10,7 @@ def hello():
 def request_ai():
     username = request.forms.username
     token = request.forms.token
+    
 
 @post('/multiplayer/') # or @route('/login', method='POST')
 def join():
