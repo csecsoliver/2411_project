@@ -13,6 +13,8 @@ let lastPlayer = document.querySelector('.turn')
 let gameReversed = false
 let colorPick = false;
 let IMAGES = [];
+let needToPull = 1
+let pulled = 0
 
 
 Main();
@@ -185,10 +187,20 @@ function Drop(event) {
     // GET RANDOM CARD FROM THE TOP OF THE POOL AND GIVE IT TO THE PLAYER
     if (dropTarget.classList.contains('canPull') && card.id == 'poolCard') {
         pool.lastChild.style.display = 'inline';
-        document.querySelector(".canPull").classList.remove("canPull")
+        if (dropTarget != player) {
+            pool.lastChild.src = "img/card.png"
+            pool.lastChild.draggable = false
+        }
         dropTarget.appendChild(pool.lastChild);
-        ShowTurnBtn()
-        Highlight()
+
+
+        pulled += 1
+
+        if (pulled == needToPull) {
+            document.querySelector(".canPull").classList.remove("canPull")
+            ShowTurnBtn()
+            Highlight()
+        }
     }
 
     // THROW CARD TO THE POOL
@@ -205,8 +217,6 @@ function canThrow(card, throwPool) {
 
     } else {
         if ((card.classList[1] == throwPool.classList[1]) && (card.classList[2] == throwPool.classList[2])) return true
-        if (card.classList.contains("wild") && throwPool.classList.contains("wild")) return true
-        if (card.classList.contains("+4") && throwPool.classList.contains("+4")) return true
     }
     return false;
 }
@@ -216,6 +226,7 @@ function canThrow(card, throwPool) {
 
 
 function ThrowCard(card) {
+    const parent = card.parentElement
     if (canThrow(card, throwPool.lastChild)) {
         if (player.classList.contains("turn")) {
             if (colorPick) {
@@ -247,19 +258,37 @@ function ThrowCard(card) {
         throwPool.appendChild(card);
 
         threw = true
+        console.log(parent.children.length)
+
+        if (parent.children.length == 2) SayUNO()
         ShowTurnBtn()
         Highlight()
     }
 }
 
+function SayUNO() {
+    console.log("asd")
+    const unoBtn = document.querySelector("#unoBtn")
+    unoBtn.style.opacity = 1
+    unoBtn.style.display = "block"
+    setTimeout(() => {
+
+        unoBtn.style.opacity = 0
+        unoBtn.style.display = "none"
+    }, 1000)
+
+}
+
 
 
 function NextTurn() {
+    pulled = 0
+    needToPull = 1
     lastPlayer = document.querySelector('.turn')
     let topCard = thrownCards.at(-1)
     let addition = 1
     let nextNum = Number(lastPlayer.id.slice(-1))
-    let counters = { "reverse": 0, "skip": 0, "plus2": 0, "plus4": 0 }
+    let counters = { "reverse": 0, "skip": 0, "plus2": 0 }
 
     if (lastPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
@@ -271,20 +300,24 @@ function NextTurn() {
 
     if (!topCard.classList.contains("lookedAt")) {
         thrownCards.forEach(element => {
+            if (element.classList.contains("+4") || element.classList.contains("+2")) needToPull = 0
+        });
+        thrownCards.forEach(element => {
             if (element.classList.contains("reverse")) counters["reverse"]++
             if (element.classList.contains("skip")) counters["skip"]++
             if (element.classList.contains("+2")) counters["plus2"]++
-            if (element.classList.contains("+4")) counters["plus4"]++
+            if (element.classList.contains("+4")) needToPull += 4
         });
 
         if (counters["reverse"] % 2 != 0) gameReversed = !gameReversed
         addition += counters["skip"]
+        // handle +2 cards
+        for (let index = 0; index < counters["plus2"]; index++) {
+            needToPull += 2
+        }
 
         topCard.classList.add("lookedAt")
-
     }
-
-
 
 
 
