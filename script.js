@@ -226,6 +226,7 @@ function canThrow(card, throwPool) {
 
 
 function ThrowCard(card) {
+    const parent = card.parentElement
     if (canThrow(card, throwPool.lastChild)) {
         if (player.classList.contains("turn")) {
             if (colorPick) {
@@ -257,9 +258,25 @@ function ThrowCard(card) {
         throwPool.appendChild(card);
 
         threw = true
+        console.log(parent.children.length)
+
+        if (parent.children.length == 2) SayUNO()
         ShowTurnBtn()
         Highlight()
     }
+}
+
+function SayUNO() {
+    console.log("asd")
+    const unoBtn = document.querySelector("#unoBtn")
+    unoBtn.style.opacity = 1
+    unoBtn.style.display = "block"
+    setTimeout(() => {
+
+        unoBtn.style.opacity = 0
+        unoBtn.style.display = "none"
+    }, 1000)
+
 }
 
 

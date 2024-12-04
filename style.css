@@ -125,6 +125,25 @@ h2 {
     font-weight: bold;
 }
 
+#unoBtn {
+    display: none;
+    margin: auto;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 30px;
+    background-color: #ff000d;
+    box-shadow: 2px 2px 20px #263b18;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+    border: none;
+    font-weight: bold;
+    position: absolute;
+    top: 45%;
+    left: 10%;
+    scale: 0;
+}
+
 #startBtn:hover,
 #turnBtn:hover {
     background-color: rgb(92, 92, 231);
@@ -133,8 +152,13 @@ h2 {
     text-shadow: 2px 2px 1px #263b18;
 }
 
+#unoBtn:hover {
+    filter: brightness(0.7);
+}
+
 #startBtn:active,
-#turnBtn:active {
+#turnBtn:active,
+#unoBtn:active {
     filter: brightness(40%);
 }
 
