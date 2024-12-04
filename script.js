@@ -10,7 +10,7 @@ const turnBtn = document.querySelector('#turnBtn')
 
 let threw = false
 let thrownCards = []
-let saidUNO = false
+let saidUNO = true
 let lastPlayer = document.querySelector('.turn')
 let gameReversed = false
 let colorPick = false;
@@ -237,10 +237,10 @@ function ThrowCard(card) {
                 document.querySelector(".colorPicker").style.scale = "1";
                 document.querySelectorAll(".color").forEach(color => {
                     color.addEventListener('click', () => {
-                        const type = throwPool.lastChild.classList[1]
-                        throwPool.lastChild.classList.remove(type);
-                        throwPool.lastChild.classList.add(color.classList[0]);
-                        throwPool.lastChild.classList.add(type)
+                        const type = card.classList[1]
+                        card.classList.remove(type);
+                        card.classList.add(color.classList[0]);
+                        card.classList.add(type)
                         document.querySelector(".colorPicker").style.scale = "0";
                         Highlight()
                     });
@@ -263,23 +263,25 @@ function ThrowCard(card) {
         threw = true
 
         if (parent.children.length == 2) SayUNO()
-        if (!saidUNO) {
+        if (saidUNO) {
             if (needToPull == 1) ShowTurnBtn()
         } else {
-            needToPull += 2
+            needToPull == 1 ? needToPull = 2 : needToPull += 2
+            document.querySelector(".turn").classList.add("canPull")
+            console.log(needToPull)
         }
         Highlight()
     }
 }
 
 function SayUNO() {
+    saidUNO = false
     unoBtn.style.scale = 1
     unoBtn.addEventListener("click", () => {
         saidUNO = true
     })
     setTimeout(() => {
         unoBtn.style.scale = 0
-        saidUNO = false
     }, 1800);
 }
 
