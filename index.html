@@ -8,10 +8,13 @@
     <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <script src="brains.js" defer></script>
 </head>
 <!-- oncontextmenu="return false" -->
 
 <body ondragstart="DragStart(event)">
+    <div id="aiform"></div>
+
     <img src="img/image.png" id="FIGMA" alt="">
     <div class="row">
 
@@ -43,7 +46,7 @@
     <div id="startScreen">
         <img src="img/logo.png" alt="">
         <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
-        <button onclick="StartGame()" id="startBtn">START GAME</button>
+        <button onclick="StartGame()" id="startBtn">NEW GAME</button>
     </div>
     <div class="colorPicker">
         <h2>Pick a color!</h2>
