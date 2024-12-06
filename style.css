@@ -100,8 +100,8 @@ body {
     border-radius: 10px;
     height: 190px;
     margin: 10px auto;
-    background-color: #5e8fd8;
-    box-shadow: 1px 1px 10px #263b18;
+    background-color: #ADD8E6;
+    box-shadow: 1px 1px 10px #000000;
     transition: 0.3s;
     border: 6px solid transparent;
 }
