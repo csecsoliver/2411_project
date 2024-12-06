@@ -260,10 +260,12 @@ function ThrowCard(card) {
         throwPool.appendChild(card);
 
         threw = true
-
+        if (parent.children.length == 1) {
+            Win(parent)
+        }
 
         // handle saying UNO
-        if (parent.children.length == 2) {
+        else if (parent.children.length == 2) {
             let saidUNO = false
             unoBtn.style.scale = 1
             unoBtn.addEventListener("click", () => {
@@ -282,6 +284,11 @@ function ThrowCard(card) {
             
         Highlight()
     }
+}
+
+
+function Win(winner) {
+    console.log(winner)
 }
 
 
