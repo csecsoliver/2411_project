@@ -46,8 +46,18 @@
     <div id="startScreen">
         <img src="img/logo.png" alt="">
         <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
-        <button onclick="StartGame()" id="startBtn">NEW GAME</button>
+        <button onclick="StartGame()" class="startBtn">NEW MATCH</button>
     </div>
+
+    <div id="endScreen">
+        <h1>MATCH END</h1>
+        <div class="leaderboard">
+            <h2>Game Results</h2>
+        </div>
+        <button onclick="StartGame()" class="startBtn">NEW MATCH</button>
+
+    </div>
+
     <div class="colorPicker">
         <h2>Pick a color!</h2>
         <div class="red color" style="background-color: red;"></div>

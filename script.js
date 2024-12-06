@@ -7,6 +7,7 @@ const hands = document.querySelectorAll('.hand');
 const player = document.querySelector('.player');
 const unoBtn = document.querySelector("#unoBtn")
 const turnBtn = document.querySelector('#turnBtn')
+const endScreen = document.querySelector("#endScreen")
 
 let threw = false
 let thrownCards = []
@@ -54,8 +55,8 @@ function StartGame() {
             }
         });
     }
-    document.querySelector('#startScreen').remove();
-    document.querySelector('#FIGMA').remove();
+    document.querySelector('#startScreen').style.display = "none"
+    document.querySelector('#FIGMA').style.display = "none"
 
     document.querySelector('#poolCard').draggable = true;
     throwPool.lastChild.classList.add("default")
@@ -123,6 +124,7 @@ function RandomCard(id) {
 
 
 function Main() {
+    endScreen.style.display = "none"
     unoBtn.style.scale = 0
 
     for (let i = 0; i < 14; i++) {
@@ -260,9 +262,7 @@ function ThrowCard(card) {
         throwPool.appendChild(card);
 
         threw = true
-        if (parent.children.length == 1) {
-            Win(parent)
-        }
+        if (parent.children.length == 1) End()
 
         // handle saying UNO
         else if (parent.children.length == 2) {
@@ -281,14 +281,25 @@ function ThrowCard(card) {
                 }
             }, 1800);
         } else if (needToPull == 1) ShowTurnBtn()
-            
+
         Highlight()
     }
 }
 
 
-function Win(winner) {
-    console.log(winner)
+function End() {
+    endScreen.style.display = "block"
+
+    let leaderboard = []
+    hands.forEach(element => {
+        leaderboard.push(element.childElementCount + "." + element.children[0].innerText)
+    });
+    leaderboard.sort()
+
+    for (let index = 0; index < hands.length; index++) {
+        let data = leaderboard[index].split(".")
+        document.querySelector(".leaderboard").innerHTML += `<div class="leaderCard"><h3>${data[1]}</h3><p>Cards left: ${Number(data[0]) - 1}</p></div>`
+    }
 }
 
 

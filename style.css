@@ -111,7 +111,7 @@ h2 {
     width: fit-content;
 }
 
-#startBtn {
+.startBtn {
     display: block;
     margin: auto;
     border-radius: 25px;
@@ -142,7 +142,7 @@ h2 {
     left: 10%;
 }
 
-#startBtn:hover,
+.startBtn:hover,
 #turnBtn:hover {
     background-color: rgb(92, 92, 231);
     color: white;
@@ -154,7 +154,7 @@ h2 {
     filter: brightness(0.7);
 }
 
-#startBtn:active,
+.startBtn:active,
 #turnBtn:active,
 #unoBtn:active {
     filter: brightness(40%);
@@ -222,6 +222,18 @@ h2 {
     }
 }
 
+@keyframes slideIn {
+    0% {
+        top: -100%
+    }
+}
+
+@keyframes slideIn2 {
+    0% {
+        font-size: 0;
+    }
+}
+
 .colorPicker {
     justify-content: center;
     align-items: center;
@@ -266,4 +278,51 @@ h2 {
 .player .card {
     border: 4px solid transparent;
     border-radius: 15px;
+}
+
+#endScreen {
+    width: 100%;
+    background-color: rgba(148, 29, 29, 0.95);
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    animation: slideIn 2s;
+    animation-fill-mode: both;
+}
+
+#endScreen h1 {
+    text-align: center;
+    font-size: 130px;
+    color: gold;
+    animation: slideIn2 3s;
+    animation-fill-mode: both;
+    font-weight: 800;
+    text-shadow: 5px 5px 1px black, 5px 5px 100px gold;
+}
+
+.leaderboard {
+    margin: auto;
+    width: 400px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.leaderCard {
+    color: black;
+    background-color: rgb(255, 255, 255);
+    padding: 1px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px black;
+}
+
+.leaderCard:nth-child(2) {
+    box-shadow: 3px 3px 10px gold;
+    background-color: gold;
 }
