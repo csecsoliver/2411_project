@@ -10,7 +10,6 @@ const turnBtn = document.querySelector('#turnBtn')
 
 let threw = false
 let thrownCards = []
-let saidUNO = true
 let lastPlayer = document.querySelector('.turn')
 let gameReversed = false
 let colorPick = false;
@@ -43,7 +42,7 @@ function StartGame() {
         hand.style.display = 'block';
     });
 
-    for (let index = 0; index < 7; index++) {
+    for (let index = 0; index < 3; index++) {
         hands.forEach(hand => {
             if (hand.classList.contains('player')) {
                 hand.appendChild(pool.lastChild);
@@ -262,27 +261,27 @@ function ThrowCard(card) {
 
         threw = true
 
-        if (parent.children.length == 2) SayUNO()
-        if (saidUNO) {
-            if (needToPull == 1) ShowTurnBtn()
-        } else {
-            needToPull == 1 ? needToPull = 2 : needToPull += 2
-            document.querySelector(".turn").classList.add("canPull")
-            console.log(needToPull)
-        }
+
+        // handle saying UNO
+        if (parent.children.length == 2) {
+            let saidUNO = false
+            unoBtn.style.scale = 1
+            unoBtn.addEventListener("click", () => {
+                saidUNO = true
+                ShowTurnBtn()
+                unoBtn.style.scale = 0
+            })
+            setTimeout(() => {
+                if (!saidUNO) {
+                    unoBtn.style.scale = 0
+                    needToPull = 2
+                    document.querySelector(".turn").classList.add("canPull")
+                }
+            }, 1800);
+        } else if (needToPull == 1) ShowTurnBtn()
+            
         Highlight()
     }
-}
-
-function SayUNO() {
-    saidUNO = false
-    unoBtn.style.scale = 1
-    unoBtn.addEventListener("click", () => {
-        saidUNO = true
-    })
-    setTimeout(() => {
-        unoBtn.style.scale = 0
-    }, 1800);
 }
 
 
