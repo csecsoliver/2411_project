@@ -42,7 +42,7 @@ function StartGame() {
         hand.style.display = 'block';
     });
 
-    for (let index = 0; index < 3; index++) {
+    for (let index = 0; index < 7; index++) {
         hands.forEach(hand => {
             if (hand.classList.contains('player')) {
                 hand.appendChild(pool.lastChild);
@@ -274,7 +274,7 @@ function ThrowCard(card) {
             setTimeout(() => {
                 if (!saidUNO) {
                     unoBtn.style.scale = 0
-                    needToPull = 2
+                    needToPull == 1 ? needToPull = 2 : needToPull += 2
                     document.querySelector(".turn").classList.add("canPull")
                 }
             }, 1800);
