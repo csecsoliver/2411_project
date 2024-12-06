@@ -83,7 +83,7 @@ body {
 #pool .card:hover,
 .player .card:hover {
     filter: brightness(110%);
-    box-shadow: -2px -2px 20px #777777;
+    box-shadow: -2px -2px 20px #000000;
     transform: translate(0, -10px);
 }
 
@@ -98,7 +98,7 @@ body {
     min-width: 100px;
     width: fit-content;
     border-radius: 10px;
-    height: 190px;
+    min-height: 190px;
     margin: 10px auto;
     background-color: #ADD8E6;
     box-shadow: 1px 1px 10px #000000;
@@ -253,6 +253,10 @@ h2 {
     animation: border2 1.4s infinite;
     background-color: rgb(92, 92, 231);
     color: white;
+}
+
+.turn .card {
+    width: 80px;
 }
 
 .throwable {
