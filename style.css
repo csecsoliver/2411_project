@@ -75,6 +75,10 @@ body {
     width: 70px;
 }
 
+.hand .card {
+    width: 50px;
+}
+
 .player .card,
 #pool .card {
     cursor: pointer;
@@ -98,12 +102,16 @@ body {
     min-width: 100px;
     width: fit-content;
     border-radius: 10px;
-    min-height: 190px;
+    height: 140px;
     margin: 10px auto;
     background-color: #ADD8E6;
     box-shadow: 1px 1px 10px #000000;
-    transition: 0.3s;
+    transition: 0.5s;
     border: 6px solid transparent;
+}
+
+.turn {
+    height: 190px;
 }
 
 h2 {
@@ -111,7 +119,7 @@ h2 {
     width: fit-content;
 }
 
-.startBtn {
+#startBtn {
     display: block;
     margin: auto;
     border-radius: 25px;
@@ -142,8 +150,9 @@ h2 {
     left: 10%;
 }
 
-.startBtn:hover,
-#turnBtn:hover {
+#startBtn:hover,
+#turnBtn:hover,
+#mainMenuBtn:hover {
     background-color: rgb(92, 92, 231);
     color: white;
     border: 1px solid transparent;
@@ -154,9 +163,10 @@ h2 {
     filter: brightness(0.7);
 }
 
-.startBtn:active,
+#startBtn:active,
 #turnBtn:active,
-#unoBtn:active {
+#unoBtn:active,
+#mainMenuBtn:active {
     filter: brightness(40%);
 }
 
@@ -294,7 +304,7 @@ h2 {
 
 #endScreen h1 {
     text-align: center;
-    font-size: 130px;
+    font-size: 80px;
     color: gold;
     animation: slideIn2 3s;
     animation-fill-mode: both;
@@ -325,4 +335,18 @@ h2 {
 .leaderCard:nth-child(2) {
     box-shadow: 3px 3px 10px gold;
     background-color: gold;
+}
+
+#mainMenuBtn {
+    display: block;
+    margin: 20px auto;
+    border-radius: 15px;
+    padding: 20px;
+    font-size: 30px;
+    background-color: #ffffff;
+    box-shadow: 2px 2px 20px #263b18;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid #ccc;
+    font-weight: bold;
 }

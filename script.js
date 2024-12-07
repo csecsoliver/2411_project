@@ -18,20 +18,43 @@ let IMAGES = [];
 let needToPull = 1
 let pulled = 0
 
-
 Main();
 
+function Main() {
+    endScreen.style.display = "none"
+    unoBtn.style.scale = 0
 
-function ShowTurnBtn(bool = true) {
-    if (bool) {
-        turnBtn.style.opacity = 1
-        turnBtn.disabled = false
-        turnBtn.style.cursor = "pointer"
-    } else {
-        turnBtn.style.opacity = 0
-        turnBtn.disabled = true
-        turnBtn.style.cursor = "default"
+    for (let i = 0; i < 14; i++) {
+        for (let j = 0; j < 8; j++) {
+            IMAGES.push('' + i + j);
+        }
     }
+
+
+    for (let index = 0; index < IMAGES.length; index++) {
+        pool.appendChild(RandomCard('card' + index));
+    }
+
+    show.forEach(element => {
+        document.querySelector(element).style.display = 'none';
+    });
+    hands.forEach(hand => {
+        hand.style.display = 'none';
+    });
+
+
+    // append to throw pool only if it is not a wild card
+    for (let index = 2; index < pool.children.length; index++) {
+        card = pool.children[index];
+        if (!card.classList.contains('wild') && !card.classList.contains('+4')) {
+            throwPool.appendChild(card);
+            card.draggable = false;
+            break;
+        }
+
+    }
+
+
 }
 
 function StartGame() {
@@ -62,6 +85,18 @@ function StartGame() {
     throwPool.lastChild.classList.add("default")
     thrownCards = [throwPool.lastChild]
     Highlight()
+}
+
+function ShowTurnBtn(bool = true) {
+    if (bool) {
+        turnBtn.style.opacity = 1
+        turnBtn.disabled = false
+        turnBtn.style.cursor = "pointer"
+    } else {
+        turnBtn.style.opacity = 0
+        turnBtn.disabled = true
+        turnBtn.style.cursor = "default"
+    }
 }
 
 function Highlight() {
@@ -123,42 +158,6 @@ function RandomCard(id) {
 }
 
 
-function Main() {
-    endScreen.style.display = "none"
-    unoBtn.style.scale = 0
-
-    for (let i = 0; i < 14; i++) {
-        for (let j = 0; j < 8; j++) {
-            IMAGES.push('' + i + j);
-        }
-    }
-
-
-    for (let index = 0; index < IMAGES.length; index++) {
-        pool.appendChild(RandomCard('card' + index));
-    }
-
-    show.forEach(element => {
-        document.querySelector(element).style.display = 'none';
-    });
-    hands.forEach(hand => {
-        hand.style.display = 'none';
-    });
-
-
-    // append to throw pool only if it is not a wild card
-    for (let index = 2; index < pool.children.length; index++) {
-        card = pool.children[index];
-        if (!card.classList.contains('wild') && !card.classList.contains('+4')) {
-            throwPool.appendChild(card);
-            card.draggable = false;
-            break;
-        }
-
-    }
-
-
-}
 
 
 
@@ -262,7 +261,7 @@ function ThrowCard(card) {
         throwPool.appendChild(card);
 
         threw = true
-        if (parent.children.length == 1) End()
+        if (parent.children.length == 1) MatchEnd()
 
         // handle saying UNO
         else if (parent.children.length == 2) {
@@ -287,7 +286,7 @@ function ThrowCard(card) {
 }
 
 
-function End() {
+function MatchEnd() {
     endScreen.style.display = "block"
 
     let leaderboard = []
