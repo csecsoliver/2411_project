@@ -1,6 +1,5 @@
 const colors = ['red', 'yellow', 'green', 'blue'];
 const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'skip', 'reverse', '+2', 'wild'];
-const show = ['#pool', '#throwPool'];
 const throwPool = document.querySelector('#throwPool');
 const pool = document.querySelector('#pool');
 const hands = document.querySelectorAll('.hand');
@@ -8,6 +7,8 @@ const player = document.querySelector('.player');
 const unoBtn = document.querySelector("#unoBtn")
 const turnBtn = document.querySelector('#turnBtn')
 const endScreen = document.querySelector("#endScreen")
+const gameScreen = document.querySelector("#gameScreen")
+const newMatchScreen = document.querySelector("#newMatchScreen")
 
 let threw = false
 let thrownCards = []
@@ -21,7 +22,14 @@ let pulled = 0
 Main();
 
 function Main() {
+    gameScreen.style.height = window.innerHeight + "px"
+    window.addEventListener("resize", function () {
+        gameScreen.style.height = window.innerHeight + "px"
+    })
+    
     endScreen.style.display = "none"
+    newMatchScreen.style.display = "none"
+    gameScreen.style.display = "none"
     unoBtn.style.scale = 0
 
     for (let i = 0; i < 14; i++) {
@@ -34,13 +42,6 @@ function Main() {
     for (let index = 0; index < IMAGES.length; index++) {
         pool.appendChild(RandomCard('card' + index));
     }
-
-    show.forEach(element => {
-        document.querySelector(element).style.display = 'none';
-    });
-    hands.forEach(hand => {
-        hand.style.display = 'none';
-    });
 
 
     // append to throw pool only if it is not a wild card
@@ -58,13 +59,8 @@ function Main() {
 }
 
 function StartGame() {
-    turnBtn.style.display = "block"
-    show.forEach(element => {
-        document.querySelector(element).style.display = 'block';
-    });
-    hands.forEach(hand => {
-        hand.style.display = 'block';
-    });
+    newMatchScreen.style.display = "none"
+    gameScreen.style.display = "flex"
 
     for (let index = 0; index < 7; index++) {
         hands.forEach(hand => {
@@ -78,13 +74,18 @@ function StartGame() {
             }
         });
     }
-    document.querySelector('#startScreen').style.display = "none"
     document.querySelector('#FIGMA').style.display = "none"
 
     document.querySelector('#poolCard').draggable = true;
     throwPool.lastChild.classList.add("default")
     thrownCards = [throwPool.lastChild]
     Highlight()
+}
+
+function NewMatch() {
+    document.querySelector('#startScreen').style.display = "none"
+    newMatchScreen.style.display = "block"
+
 }
 
 function ShowTurnBtn(bool = true) {

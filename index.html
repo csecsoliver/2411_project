@@ -13,40 +13,47 @@
 <!-- oncontextmenu="return false" -->
 
 <body ondragstart="DragStart(event)">
-    <div id="aiform"></div>
 
     <img src="img/image.png" id="FIGMA" alt="">
-    <div class="row">
-
-        <div class="hand" id="player2">
-            <h2>Machine 1</h2>
+    <div id="gameScreen">
+        <div class="row">
+            <div class="hand" id="player2">
+                <h2>Machine 1</h2>
+            </div>
+            <div class="hand" id="player3">
+                <h2>Machine 2</h2>
+            </div>
+            <div class="hand" id="player4">
+                <h2>Machine 3</h2>
+            </div>
         </div>
-        <div class="hand" id="player3">
-            <h2>Machine 2</h2>
+        <div class="row2">
+            <div id="pool">
+                <img src="img/card.png" class="card styleCard" style="display: inline;">
+                <img id="poolCard" src="img/card.png" class="card" style="display: inline;" draggable="false">
+            </div>
+            <button id="turnBtn" disabled onclick="NextTurn()">End Turn</button>
+            <div id="throwPool" ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)">
+                <img id="styleCard" src="" class="card styleCard" draggable="false">
+            </div>
         </div>
-        <div class="hand" id="player4">
-            <h2>Machine 3</h2>
+        <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)"
+            class="player hand turn canPull" id="player1">
+            <h2>You</h2>
         </div>
     </div>
-    <div class="row2">
-
-        <div id="pool">
-            <img src="img/card.png" class="card styleCard" style="display: inline;">
-            <img id="poolCard" src="img/card.png" class="card" style="display: inline;" draggable="false">
-        </div>
-        <button id="turnBtn" disabled onclick="NextTurn()">End Turn</button>
-
-
-        <div id="throwPool" ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)">
-            <img id="styleCard" src="" class="card styleCard" draggable="false">
-        </div>
-    </div>
-
 
     <div id="startScreen">
-        <img src="img/logo.png" alt="">
+        <img src="img/logo.png" class="logo" alt="">
         <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
-        <button onclick="StartGame()" id="startBtn">New Match</button>
+        <button onclick="NewMatch()" id="newMatchBtn">New Match</button>
+    </div>
+
+    <div id="newMatchScreen">
+        <div id="aiform"></div>
+        <img src="img/logo.png" class="logo" alt="">
+
+        <button onclick="StartGame()" id="startBtn">Start Game</button>
     </div>
 
     <div id="endScreen">
@@ -66,12 +73,8 @@
         <div class="yellow color" style="background-color: rgb(255, 174, 0);"></div>
     </div>
 
-    <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)"
-        class="player hand turn canPull" id="player1">
-        <h2>You</h2>
-    </div>
-    <button id="unoBtn">Click to say UNO!</button>
 
+    <button id="unoBtn">Click to say UNO!</button>
 
 </body>
 
