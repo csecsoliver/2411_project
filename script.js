@@ -198,6 +198,15 @@ function Drop(event) {
         dropTarget.appendChild(pool.lastChild);
 
 
+        if (pool.childElementCount == 3) {
+            pool.children[0].style.display = "none"
+        }
+        else if (pool.childElementCount == 2) {
+            pool.style.display = "none"
+            MatchEnd()
+        }
+
+
         pulled += 1
 
         if (pulled == needToPull) {
@@ -288,6 +297,7 @@ function ThrowCard(card) {
 
 
 function MatchEnd() {
+    turnBtn.disabled = "true"
     endScreen.style.display = "block"
 
     let leaderboard = []
