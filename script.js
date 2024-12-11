@@ -26,7 +26,7 @@ function Main() {
     window.addEventListener("resize", function () {
         gameScreen.style.height = window.innerHeight + "px"
     })
-    
+
     endScreen.style.display = "none"
     newMatchScreen.style.display = "none"
     gameScreen.style.display = "none"
@@ -292,19 +292,27 @@ function MatchEnd() {
 
     let leaderboard = []
     hands.forEach(element => {
-        leaderboard.push(element.childElementCount + "." + element.children[0].innerText)
+        leaderboard.push(element.childElementCount + "." + element.children[0].innerText + (element.classList.contains("player") ? ".PLAYER" : ""))
     });
     leaderboard.sort()
 
     for (let index = 0; index < hands.length; index++) {
         let data = leaderboard[index].split(".")
-        document.querySelector(".leaderboard").innerHTML += `<div class="leaderCard"><h3>${data[1]}</h3><p>Cards left: ${Number(data[0]) - 1}</p></div>`
+        document.querySelector(".leaderboard").innerHTML += `
+        <div class="leaderCard${data[2] ? " leaderCardPlayer" : ""}">
+            <h2 class="placement">${index + 1}.</h2>
+            <div>
+                <h3>${data[1]}</h3>
+                <p>Cards left: ${Number(data[0]) - 1}</p>
+            </div>
+        </div>`
     }
 }
 
 
 
 function NextTurn() {
+    MatchEnd()
     pulled = 0
     needToPull = 1
     lastPlayer = document.querySelector('.turn')
