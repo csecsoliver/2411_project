@@ -183,12 +183,24 @@ function DragLeave(event) {
 }
 
 function Drop(event) {
-    const dropTarget = event.target;
+    let dropTarget = event.target;
     const card = document.getElementById(event.dataTransfer.getData('text'));
 
-    dropTarget.style.filter = 'brightness(1)';
     // GET RANDOM CARD FROM THE TOP OF THE POOL AND GIVE IT TO THE PLAYER
-    if (dropTarget.classList.contains('canPull') && card.id == 'poolCard') {
+    dropTarget.style.filter = 'brightness(1)';
+
+    if (dropTarget.parentElement.classList.contains("canPull")) dropTarget = dropTarget.parentElement
+
+    if (card.id == 'poolCard') PullCard(dropTarget)
+
+    // THROW CARD TO THE POOL
+    else if (dropTarget == throwPool.lastChild) {
+        ThrowCard(card);
+    }
+}
+
+function PullCard(dropTarget) {
+    if (dropTarget.classList.contains('canPull')) {
         pool.lastChild.style.display = 'inline';
         if (dropTarget != player) {
             pool.lastChild.src = "img/card.png"
@@ -213,11 +225,6 @@ function Drop(event) {
             ShowTurnBtn()
             Highlight()
         }
-    }
-
-    // THROW CARD TO THE POOL
-    else if (dropTarget == throwPool.lastChild) {
-        ThrowCard(card);
     }
 }
 
