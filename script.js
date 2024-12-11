@@ -85,7 +85,6 @@ function StartGame() {
 function NewMatch() {
     document.querySelector('#startScreen').style.display = "none"
     newMatchScreen.style.display = "block"
-
 }
 
 function ShowTurnBtn(bool = true) {
@@ -322,7 +321,6 @@ function MatchEnd() {
 
 
 function NextTurn() {
-    MatchEnd()
     pulled = 0
     needToPull = 1
     lastPlayer = document.querySelector('.turn')

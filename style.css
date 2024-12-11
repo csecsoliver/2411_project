@@ -277,10 +277,11 @@ h2 {
     animation: border2 1.4s infinite;
     background-color: rgb(92, 92, 231);
     color: white;
+    border-radius: 30px;
 }
 
 .turn .card {
-    width: 80px;
+    width: 70px;
 }
 
 .throwable {
