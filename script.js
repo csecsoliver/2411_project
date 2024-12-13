@@ -395,12 +395,11 @@ function NextTurn() {
     if (nextPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
             element.draggable = true
+            Highlight()
         });
     } else {
         setTimeout(function () {
-            for (let index = 0; index < needToPull; index++) {
-                PullCard(nextPlayer)
-            }
+            let didntThrow = true
             document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
                 if (canThrow(card)) {
                     let classes = ""
@@ -410,30 +409,27 @@ function NextTurn() {
                     card.src = 'img/cards/' + classes.split("Q")[1]
 
                     if (card.classList.contains("wild") || card.classList.contains("+4")) {
-                        console.log(card.classList)
-
-                        const asd = []
+                        const tempList = []
                         card.classList.forEach(element => {
-                            asd.push(element)
+                            tempList.push(element)
                         });
-                        asd.push(card.classList[1])
-                        asd[1] = colors[Math.floor(Math.random() * colors.length)];
+                        tempList.push(card.classList[1])
+                        tempList[1] = colors[Math.floor(Math.random() * colors.length)];
                         card.classList = []
-                        for (let index = 0; index < asd.length; index++) {
-                            card.classList.add(asd[index])
+                        for (let index = 0; index < tempList.length; index++) {
+                            card.classList.add(tempList[index])
                         }
-
                     }
                     ThrowCard(card)
-
-
+                    didntThrow = false
                 }
-
             })
-
-
+            if (didntThrow == true || needToPull != 1) {
+                for (let index = 0; index < needToPull; index++) {
+                    PullCard(nextPlayer)
+                }
+            }
         }, 1000)
     }
-    Highlight()
     ShowTurnBtn(false)
 }
