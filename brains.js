@@ -35,12 +35,21 @@ aiform = `<div id="aiform"
             width: 0px;
             border: 1px solid black;
             height:inherit;
-            "></div></div>
-<button onclick="StartGameBrain()" id="startBtn">NEW GAME</button>`;
+            "></div>
+            </div>
+
+`;
 
 
-document.getElementById("startBtn").outerHTML = aiform;
-if (document.getElementById("startBtn").outerHTML == aiform) {
+document.getElementById("aiform").outerHTML = aiform;
+document.getElementById("startBtn").outerHTML = '<button onclick="StartGameBrain()" id="startBtn">Start Game</button>'
+
+let players = {player1:[],player2:[],player3:[],player4:[]}
+
+let card_function_index = {1:"n1",2:"n2",3:"n3",4:"n4",5:"n5",6: "n6", 7: "n7", }
+
+
+if (document.getElementById("aiform").outerHTML == aiform) {
     console.log('Successful gameloop injection. To disable: unlink brains.js from index.html')
 } else {
     console.log(document.getElementById("aiform").outerHTML)
@@ -48,5 +57,25 @@ if (document.getElementById("startBtn").outerHTML == aiform) {
 
 function StartGameBrain() {
     StartGame()
-    console.log("hello wrold");
+    console.log("player1 cards:")
+    document.querySelectorAll(".player .card").forEach(element => {
+        
+        console.log(element)
+
+    });
+    console.log("player2 cards:")
+    document.querySelectorAll("#player2 .card").forEach(element => {
+        console.log(element)
+
+    });
+    console.log("player3 cards:")
+    document.querySelectorAll("#player3 .card").forEach(element => {
+        console.log(element)
+        
+    });
+    console.log("player4 cards:")
+    document.querySelectorAll("#player4 .card").forEach(element => {
+        console.log(element)
+        
+    });
 }
