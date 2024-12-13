@@ -102,7 +102,7 @@ function ShowTurnBtn(bool = true) {
 function Highlight() {
     document.querySelectorAll(".player .card").forEach(element => {
         element.classList.remove("throwable")
-        if (canThrow(element, throwPool.lastChild)) {
+        if (canThrow(element)) {
             element.classList.add("throwable")
             document.querySelector(".turn").classList.remove("canPull")
         }
@@ -228,14 +228,15 @@ function PullCard(dropTarget) {
     }
 }
 
-function canThrow(card, throwPool) {
+function canThrow(card) {
+    let topPool = throwPool.lastChild
     if (!threw) {
         if (card.classList.contains('wild') || card.classList.contains('+4')) { colorPick = true; return true; }
-        if (card.classList[1] == throwPool.classList[1]) return true;
-        if (card.classList[2] == throwPool.classList[2]) return true;
+        if (card.classList[1] == topPool.classList[1]) return true;
+        if (card.classList[2] == topPool.classList[2]) return true;
 
     } else {
-        if ((card.classList[1] == throwPool.classList[1]) && (card.classList[2] == throwPool.classList[2])) return true
+        if ((card.classList[1] == topPool.classList[1]) && (card.classList[2] == topPool.classList[2])) return true
     }
     return false;
 }
@@ -246,7 +247,7 @@ function canThrow(card, throwPool) {
 
 function ThrowCard(card) {
     const parent = card.parentElement
-    if (canThrow(card, throwPool.lastChild)) {
+    if (canThrow(card)) {
         if (player.classList.contains("turn")) {
             if (colorPick) {
                 colorPick = false;
@@ -389,11 +390,18 @@ function NextTurn() {
     threw = false
     thrownCards = [throwPool.lastChild]
 
+    Highlight()
     if (nextPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
             element.draggable = true
         });
-        Highlight()
+    } else {
+        setTimeout(function () {
+            document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
+                if (canThrow(card)) ThrowCard(card)
+                    else PullCard(nextPlayer)
+            })
+        }, 1000)
     }
     //ShowTurnBtn(false)
 }
