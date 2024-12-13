@@ -69,6 +69,7 @@ function StartGame() {
             }
             else {
                 pool.lastChild.draggable = false;
+                pool.lastChild.classList.add("Q" + pool.lastChild.src.split("cards/")[1] + "Q")
                 pool.lastChild.src = 'img/card.png';
                 hand.appendChild(pool.lastChild);
             }
@@ -203,6 +204,7 @@ function PullCard(dropTarget) {
     if (dropTarget.classList.contains('canPull')) {
         pool.lastChild.style.display = 'inline';
         if (dropTarget != player) {
+            pool.lastChild.classList.add("Q" + pool.lastChild.src.split("cards/")[1] + "Q")
             pool.lastChild.src = "img/card.png"
             pool.lastChild.draggable = false
         }
@@ -390,18 +392,48 @@ function NextTurn() {
     threw = false
     thrownCards = [throwPool.lastChild]
 
-    Highlight()
     if (nextPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
             element.draggable = true
         });
     } else {
         setTimeout(function () {
+            for (let index = 0; index < needToPull; index++) {
+                PullCard(nextPlayer)
+            }
             document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
-                if (canThrow(card)) ThrowCard(card)
-                    else PullCard(nextPlayer)
+                if (canThrow(card)) {
+                    let classes = ""
+                    card.classList.forEach(element => {
+                        classes += element
+                    });
+                    card.src = 'img/cards/' + classes.split("Q")[1]
+
+                    if (card.classList.contains("wild") || card.classList.contains("+4")) {
+                        console.log(card.classList)
+
+                        const asd = []
+                        card.classList.forEach(element => {
+                            asd.push(element)
+                        });
+                        asd.push(card.classList[1])
+                        asd[1] = colors[Math.floor(Math.random() * colors.length)];
+                        card.classList = []
+                        for (let index = 0; index < asd.length; index++) {
+                            card.classList.add(asd[index])
+                        }
+
+                    }
+                    ThrowCard(card)
+
+
+                }
+
             })
+
+
         }, 1000)
     }
-    //ShowTurnBtn(false)
+    Highlight()
+    ShowTurnBtn(false)
 }
