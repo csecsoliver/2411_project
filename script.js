@@ -9,6 +9,8 @@ const turnBtn = document.querySelector('#turnBtn')
 const endScreen = document.querySelector("#endScreen")
 const gameScreen = document.querySelector("#gameScreen")
 const newMatchScreen = document.querySelector("#newMatchScreen")
+const throwPoolPosition = document.querySelector("#throwPoolPosition")
+const poolPosition = document.querySelector("#poolPosition")
 
 let threw = false
 let thrownCards = []
@@ -23,8 +25,12 @@ Main();
 
 function Main() {
     gameScreen.style.height = window.innerHeight + "px"
+    throwPoolPosition.style.left = (window.innerWidth - pool.getBoundingClientRect().right + 130) + "px"
+    poolPosition.style.left = (window.innerWidth - throwPool.getBoundingClientRect().right + 130) + "px"
     window.addEventListener("resize", function () {
         gameScreen.style.height = window.innerHeight + "px"
+        throwPoolPosition.style.left = (window.innerWidth - pool.getBoundingClientRect().right + 130) + "px"
+        poolPosition.style.left = (window.innerWidth - throwPool.getBoundingClientRect().right + 130) + "px"
     })
 
     endScreen.style.display = "none"
@@ -402,11 +408,7 @@ function NextTurn() {
             let didntThrow = true
             document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
                 if (canThrow(card)) {
-                    let classes = ""
-                    card.classList.forEach(element => {
-                        classes += element
-                    });
-                    card.src = 'img/cards/' + classes.split("Q")[1]
+                    card.src = 'img/cards/' + card.classList.value.split("Q")[1]
 
                     if (card.classList.contains("wild") || card.classList.contains("+4")) {
                         const tempList = []
@@ -420,16 +422,51 @@ function NextTurn() {
                             card.classList.add(tempList[index])
                         }
                     }
+                    //cardAnimation(card, "throw")
                     ThrowCard(card)
                     didntThrow = false
                 }
             })
             if (didntThrow == true || needToPull != 1) {
                 for (let index = 0; index < needToPull; index++) {
+                    //cardAnimation(card, "pull")
                     PullCard(nextPlayer)
                 }
             }
         }, 1000)
     }
     ShowTurnBtn(false)
+}
+
+function cardAnimation(card, action) {
+    let newCard = card.cloneNode()
+    newCard.id = ""
+    newCard.classList.add("animatedCard")
+
+    if (action == "throw") {
+        newCard.style.left = card.parentElement.getBoundingClientRect().left + "px"
+        newCard.style.top = card.parentElement.getBoundingClientRect().top + "px"
+    }
+    else {
+        newCard.style.left = poolPosition.style.left
+    }
+    document.querySelector("body").appendChild(newCard)
+
+
+    if (action == "throw") {
+        setTimeout(function () {
+            newCard.style.transition = "1s"
+            newCard.style.left = throwPoolPosition.style.left
+            newCard.style.top = "46%"
+            newCard.style.scale = 2
+        }, 20)
+    }
+    else {
+        setTimeout(function () {
+            newCard.style.transition = "1s"
+            newCard.style.left = card.parentElement.getBoundingClientRect().left + "px"
+            newCard.style.top = card.parentElement.getBoundingClientRect().top + "px"
+            newCard.style.scale = 2
+        }, 20)
+    }
 }
