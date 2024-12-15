@@ -300,12 +300,6 @@ h2 {
     left: 100%;
 }
 
-#throwPoolPosition,
-#poolPosition {
-    top: 400px;
-    position: absolute;
-}
-
 #endScreen {
     width: 100%;
     background-color: rgba(148, 29, 29, 0.90);

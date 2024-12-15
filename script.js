@@ -315,7 +315,11 @@ function MatchEnd() {
     hands.forEach(element => {
         leaderboard.push(element.childElementCount + "." + element.children[0].innerText + (element.classList.contains("player") ? ".PLAYER" : ""))
     });
-    leaderboard.sort()
+    leaderboard.sort((a, b) => {
+        const numA = parseInt(a.split('.')[0], 10);
+        const numB = parseInt(b.split('.')[0], 10);
+        return numA - numB;
+    });
 
     for (let index = 0; index < hands.length; index++) {
         let data = leaderboard[index].split(".")
