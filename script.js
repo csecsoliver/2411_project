@@ -9,6 +9,7 @@ const turnBtn = document.querySelector('#turnBtn')
 const endScreen = document.querySelector("#endScreen")
 const gameScreen = document.querySelector("#gameScreen")
 const newMatchScreen = document.querySelector("#newMatchScreen")
+const CARDANIMSPEED = 1.2 // seconds
 
 let threw = false
 let thrownCards = []
@@ -69,6 +70,7 @@ function StartGame() {
             }
             else {
                 pool.lastChild.draggable = false;
+                pool.lastChild.classList.add("Q" + pool.lastChild.src.split("cards/")[1] + "Q")
                 pool.lastChild.src = 'img/card.png';
                 hand.appendChild(pool.lastChild);
             }
@@ -102,9 +104,9 @@ function ShowTurnBtn(bool = true) {
 function Highlight() {
     document.querySelectorAll(".player .card").forEach(element => {
         element.classList.remove("throwable")
-        if (canThrow(element, throwPool.lastChild)) {
+        if (canThrow(element)) {
             element.classList.add("throwable")
-            document.querySelector(".turn").classList.remove("canPull")
+            if (needToPull == 1) document.querySelector(".turn").classList.remove("canPull")
         }
     });
     colorPick = false
@@ -203,6 +205,7 @@ function PullCard(dropTarget) {
     if (dropTarget.classList.contains('canPull')) {
         pool.lastChild.style.display = 'inline';
         if (dropTarget != player) {
+            pool.lastChild.classList.add("Q" + pool.lastChild.src.split("cards/")[1] + "Q")
             pool.lastChild.src = "img/card.png"
             pool.lastChild.draggable = false
         }
@@ -228,14 +231,15 @@ function PullCard(dropTarget) {
     }
 }
 
-function canThrow(card, throwPool) {
+function canThrow(card) {
+    let topPool = throwPool.lastChild
     if (!threw) {
         if (card.classList.contains('wild') || card.classList.contains('+4')) { colorPick = true; return true; }
-        if (card.classList[1] == throwPool.classList[1]) return true;
-        if (card.classList[2] == throwPool.classList[2]) return true;
+        if (card.classList[1] == topPool.classList[1]) return true;
+        if (card.classList[2] == topPool.classList[2]) return true;
 
     } else {
-        if ((card.classList[1] == throwPool.classList[1]) && (card.classList[2] == throwPool.classList[2])) return true
+        if ((card.classList[1] == topPool.classList[1]) && (card.classList[2] == topPool.classList[2])) return true
     }
     return false;
 }
@@ -244,9 +248,9 @@ function canThrow(card, throwPool) {
 
 
 
-function ThrowCard(card) {
+async function ThrowCard(card) {
     const parent = card.parentElement
-    if (canThrow(card, throwPool.lastChild)) {
+    if (canThrow(card)) {
         if (player.classList.contains("turn")) {
             if (colorPick) {
                 colorPick = false;
@@ -280,7 +284,7 @@ function ThrowCard(card) {
         if (parent.children.length == 1) MatchEnd()
 
         // handle saying UNO
-        else if (parent.children.length == 2) {
+        else if (parent.children.length == 2 && parent == player) {
             let saidUNO = false
             unoBtn.style.scale = 1
             unoBtn.addEventListener("click", () => {
@@ -295,6 +299,7 @@ function ThrowCard(card) {
                     document.querySelector(".turn").classList.add("canPull")
                 }
             }, 1800);
+            await pause(1800)
         } else if (needToPull == 1) ShowTurnBtn()
 
         Highlight()
@@ -310,7 +315,11 @@ function MatchEnd() {
     hands.forEach(element => {
         leaderboard.push(element.childElementCount + "." + element.children[0].innerText + (element.classList.contains("player") ? ".PLAYER" : ""))
     });
-    leaderboard.sort()
+    leaderboard.sort((a, b) => {
+        const numA = parseInt(a.split('.')[0], 10);
+        const numB = parseInt(b.split('.')[0], 10);
+        return numA - numB;
+    });
 
     for (let index = 0; index < hands.length; index++) {
         let data = leaderboard[index].split(".")
@@ -375,8 +384,8 @@ function NextTurn() {
     }
 
 
-    if (nextNum > hands.length) nextNum = addition == 2 ? 2 : 1;
-    if (nextNum < 1) nextNum = addition == 2 ? hands.length - 1 : hands.length;
+    if (nextNum > hands.length) nextNum = addition != 1 ? Math.abs(1 - addition) : 1;
+    if (nextNum < 1) nextNum = addition != 1 ? hands.length - 1 : hands.length;
     let nextPlayer = document.querySelector(`#player${nextNum}`)
 
 
@@ -392,8 +401,93 @@ function NextTurn() {
     if (nextPlayer == player) {
         document.querySelectorAll(".player .card").forEach(element => {
             element.draggable = true
+            Highlight()
         });
-        Highlight()
     }
-    //ShowTurnBtn(false)
+
+    // enemy AI
+    else {
+        setTimeout(async function () {
+            let didntThrow = true
+            document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
+                if (canThrow(card) && didntThrow) {
+                    if (card.classList.contains("wild") || card.classList.contains("+4")) {
+                        const tempList = []
+                        card.classList.forEach(element => {
+                            tempList.push(element)
+                        });
+                        tempList.push(card.classList[1])
+                        tempList[1] = colors[Math.floor(Math.random() * colors.length)];
+                        card.classList = []
+                        for (let index = 0; index < tempList.length; index++) {
+                            card.classList.add(tempList[index])
+                        }
+                    }
+                    let src = 'img/cards/' + card.classList.value.split("Q")[1]
+                    cardAnimation(card, src, "throw")
+
+                    setTimeout(function () {
+                        card.src = src
+                        ThrowCard(card)
+                        document.querySelectorAll(".animatedCard").forEach(element => {
+                            element.remove()
+                        });
+                    }, CARDANIMSPEED * 1000)
+                    didntThrow = false
+                }
+            })
+            if (!didntThrow) await pause(CARDANIMSPEED * 1000)
+            if (didntThrow || needToPull != 1) {
+                for (let index = 0; index < needToPull; index++) {
+                    cardAnimation(pool.lastChild, 'img/card.png', "pull", nextPlayer)
+                    await pause(CARDANIMSPEED * 1000)
+                    PullCard(nextPlayer)
+                    document.querySelectorAll(".animatedCard").forEach(element => {
+                        element.remove()
+                    });
+                }
+            }
+        }, 1000)
+    }
+    console.log(nextPlayer)
+    ShowTurnBtn(false)
+}
+
+function pause(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function cardAnimation(card, src, action, nextPlayer) {
+    let newCard = card.cloneNode()
+    newCard.src = src
+    newCard.id = ""
+    newCard.classList.add("animatedCard")
+
+    if (action == "throw") {
+        newCard.style.left = card.parentElement.getBoundingClientRect().left + "px"
+        newCard.style.top = card.parentElement.getBoundingClientRect().top + 100 + "px"
+    }
+    else {
+        newCard.style.left = pool.getBoundingClientRect().left + 100 + "px"
+        newCard.style.scale = 2.4
+    }
+    document.querySelector("body").appendChild(newCard)
+
+
+    if (action == "throw") {
+        setTimeout(function () {
+            newCard.style.transition = CARDANIMSPEED + "s"
+            newCard.style.left = throwPool.getBoundingClientRect().left + 100 + "px"
+            newCard.style.top = "46%"
+            newCard.style.scale = 2.4
+        }, 20)
+    }
+    else {
+        setTimeout(function () {
+            newCard.style.transition = CARDANIMSPEED + "s"
+            newCard.style.left = nextPlayer.getBoundingClientRect().left + "px"
+            newCard.style.top = nextPlayer.getBoundingClientRect().top + 100 + "px"
+            newCard.style.scale = 1
+        }, 20)
+    }
 }

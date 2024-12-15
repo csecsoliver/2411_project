@@ -293,6 +293,13 @@ h2 {
     border-radius: 15px;
 }
 
+.animatedCard {
+    position: absolute;
+    z-index: 100;
+    top: 46%;
+    left: 100%;
+}
+
 #endScreen {
     width: 100%;
     background-color: rgba(148, 29, 29, 0.90);
