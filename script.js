@@ -11,7 +11,7 @@ const gameScreen = document.querySelector("#gameScreen")
 const newMatchScreen = document.querySelector("#newMatchScreen")
 const throwPoolPosition = document.querySelector("#throwPoolPosition")
 const poolPosition = document.querySelector("#poolPosition")
-const CARDANIMSPEED = 1
+const CARDANIMSPEED = 1.4 // seconds
 
 let threw = false
 let thrownCards = []
@@ -26,12 +26,12 @@ Main();
 
 function Main() {
     gameScreen.style.height = window.innerHeight + "px"
-    throwPoolPosition.style.left = (window.innerWidth - pool.getBoundingClientRect().right + 110) + "px"
-    poolPosition.style.left = (window.innerWidth - throwPool.getBoundingClientRect().right + 110) + "px"
+    throwPoolPosition.style.left = (window.innerWidth - pool.getBoundingClientRect().right + 100) + "px"
+    poolPosition.style.left = (window.innerWidth - throwPool.getBoundingClientRect().right + 100) + "px"
     window.addEventListener("resize", function () {
         gameScreen.style.height = window.innerHeight + "px"
-        throwPoolPosition.style.left = (window.innerWidth - pool.getBoundingClientRect().right + 110) + "px"
-        poolPosition.style.left = (window.innerWidth - throwPool.getBoundingClientRect().right + 110) + "px"
+        throwPoolPosition.style.left = (window.innerWidth - pool.getBoundingClientRect().right + 100) + "px"
+        poolPosition.style.left = (window.innerWidth - throwPool.getBoundingClientRect().right + 100) + "px"
     })
 
     endScreen.style.display = "none"
@@ -436,7 +436,7 @@ function NextTurn() {
             })
             if (didntThrow == true || needToPull != 1) {
                 for (let index = 0; index < needToPull; index++) {
-                    cardAnimation(pool.lastChild, 'img/card.png', "pull")
+                    cardAnimation(pool.lastChild, 'img/card.png', "pull", nextPlayer)
                     setTimeout(function () {
                         PullCard(nextPlayer)
                         document.querySelectorAll(".animatedCard").forEach(element => {
@@ -450,7 +450,7 @@ function NextTurn() {
     ShowTurnBtn(false)
 }
 
-function cardAnimation(card, src, action) {
+function cardAnimation(card, src, action, nextPlayer) {
     let newCard = card.cloneNode()
     newCard.src = src
     newCard.id = ""
@@ -458,10 +458,11 @@ function cardAnimation(card, src, action) {
 
     if (action == "throw") {
         newCard.style.left = card.parentElement.getBoundingClientRect().left + "px"
-        newCard.style.top = card.parentElement.getBoundingClientRect().top + "px"
+        newCard.style.top = card.parentElement.getBoundingClientRect().top + 100 + "px"
     }
     else {
         newCard.style.left = poolPosition.style.left
+        newCard.style.scale = 2.4
     }
     document.querySelector("body").appendChild(newCard)
 
@@ -471,14 +472,14 @@ function cardAnimation(card, src, action) {
             newCard.style.transition = CARDANIMSPEED + "s"
             newCard.style.left = throwPoolPosition.style.left
             newCard.style.top = "46%"
-            newCard.style.scale = 2.3
+            newCard.style.scale = 2.4
         }, 20)
     }
     else {
         setTimeout(function () {
             newCard.style.transition = CARDANIMSPEED + "s"
-            newCard.style.left = card.parentElement.getBoundingClientRect().left + "px"
-            newCard.style.top = card.parentElement.getBoundingClientRect().top + "px"
+            newCard.style.left = nextPlayer.getBoundingClientRect().left + "px"
+            newCard.style.top = nextPlayer.getBoundingClientRect().top + 100 + "px"
             newCard.style.scale = 1
         }, 20)
     }
