@@ -384,8 +384,8 @@ function NextTurn() {
     }
 
 
-    if (nextNum > hands.length) nextNum = addition != 1 ? Math.abs(1 - addition) : 1;
-    if (nextNum < 1) nextNum = addition != 1 ? hands.length - 1 : hands.length;
+    if (nextNum > hands.length) nextNum = nextNum-hands.length;
+    if (nextNum < 1) nextNum = Math.abs(hands.length-nextNum);
     let nextPlayer = document.querySelector(`#player${nextNum}`)
 
 
@@ -449,7 +449,6 @@ function NextTurn() {
             }
         }, 1000)
     }
-    console.log(nextPlayer)
     ShowTurnBtn(false)
 }
 
