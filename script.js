@@ -402,9 +402,12 @@ function NextTurn() {
         nextNum += addition;
     }
 
-
-    if (nextNum > hands.length) nextNum = nextNum - hands.length;
-    if (nextNum < 1) nextNum = Math.abs(hands.length - nextNum);
+    if (nextNum > hands.length) {
+        nextNum = nextNum % hands.length;
+    }
+    if (nextNum < 1) {
+        nextNum = hands.length + (nextNum % hands.length);
+    }
     let nextPlayer = document.querySelector(`#player${nextNum}`)
 
 
