@@ -29,6 +29,10 @@
             </div>
         </div>
         <div class="row2">
+            <div class="divider">
+                <button id="unoBtn">Click to say UNO!</button>
+            </div>
+
             <div id="pool">
                 <img src="img/card.png" class="card styleCard" style="display: inline;">
                 <img id="poolCard" src="img/card.png" class="card" style="display: inline;" draggable="false">
@@ -36,6 +40,10 @@
             <button id="turnBtn" disabled onclick="NextTurn()">End Turn</button>
             <div id="throwPool" ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)">
                 <img id="styleCard" src="" class="card styleCard" draggable="false">
+            </div>
+
+            <div class="divider">
+                <div id="messageBox">a</div>
             </div>
         </div>
         <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)"
@@ -51,8 +59,6 @@
             <div class="yellow color" style="background-color: rgb(255, 174, 0);"></div>
         </div>
 
-
-        <button id="unoBtn">Click to say UNO!</button>
     </div>
 
     <div id="startScreen">

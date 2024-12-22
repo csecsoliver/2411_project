@@ -9,6 +9,7 @@ const turnBtn = document.querySelector('#turnBtn')
 const endScreen = document.querySelector("#endScreen")
 const gameScreen = document.querySelector("#gameScreen")
 const newMatchScreen = document.querySelector("#newMatchScreen")
+const messageBox = document.querySelector("#messageBox")
 const CARDANIMSPEED = 1.2 // seconds
 
 let threw = false
@@ -31,6 +32,7 @@ function Main() {
     endScreen.style.display = "none"
     newMatchScreen.style.display = "none"
     gameScreen.style.display = "none"
+    messageBox.style.scale = 0
     ShowUnoBtn(false)
 
     for (let i = 0; i < 14; i++) {
@@ -475,7 +477,11 @@ function pause(ms) {
 }
 
 function Message(msg) {
-    console.log(msg)
+    messageBox.innerHTML = `Next card should be <span style="color: ${msg}">${msg}.</span>`
+    messageBox.style.scale = 1
+    setTimeout(() => {
+        messageBox.style.scale = 0
+    }, 6000);
 }
 
 
