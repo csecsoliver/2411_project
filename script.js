@@ -31,7 +31,7 @@ function Main() {
     endScreen.style.display = "none"
     newMatchScreen.style.display = "none"
     gameScreen.style.display = "none"
-    unoBtn.style.scale = 0
+    ShowUnoBtn(false)
 
     for (let i = 0; i < 14; i++) {
         for (let j = 0; j < 8; j++) {
@@ -98,6 +98,22 @@ function ShowTurnBtn(bool = true) {
         turnBtn.style.opacity = 0
         turnBtn.disabled = true
         turnBtn.style.cursor = "default"
+    }
+}
+
+function ShowUnoBtn(bool = true) {
+    if (bool) {
+        unoBtn.innerHTML = "Click to say UNO!"
+        unoBtn.disabled = false
+        unoBtn.style.backgroundColor = "#ff000d"
+        unoBtn.style.cursor = "pointer"
+        unoBtn.style.color = "white"
+    } else {
+        unoBtn.innerHTML = "You can't say UNO right now."
+        unoBtn.disabled = true
+        unoBtn.style.backgroundColor = "#3a090c"
+        unoBtn.style.cursor = "default"
+        unoBtn.style.color = "grey"
     }
 }
 
@@ -286,20 +302,21 @@ async function ThrowCard(card) {
         // handle saying UNO
         else if (parent.children.length == 2 && parent == player) {
             let saidUNO = false
-            unoBtn.style.scale = 1
+            ShowUnoBtn()
+
             unoBtn.addEventListener("click", () => {
                 saidUNO = true
                 ShowTurnBtn()
-                unoBtn.style.scale = 0
+                ShowUnoBtn(false)
             })
             setTimeout(() => {
                 if (!saidUNO) {
-                    unoBtn.style.scale = 0
+                    ShowUnoBtn(false)
                     needToPull == 1 ? needToPull = 2 : needToPull += 2
                     document.querySelector(".turn").classList.add("canPull")
                 }
-            }, 1800);
-            await pause(1800)
+            }, 1500);
+            await pause(1500)
         } else if (needToPull == 1) ShowTurnBtn()
 
         Highlight()
@@ -384,8 +401,8 @@ function NextTurn() {
     }
 
 
-    if (nextNum > hands.length) nextNum = nextNum-hands.length;
-    if (nextNum < 1) nextNum = Math.abs(hands.length-nextNum);
+    if (nextNum > hands.length) nextNum = nextNum - hands.length;
+    if (nextNum < 1) nextNum = Math.abs(hands.length - nextNum);
     let nextPlayer = document.querySelector(`#player${nextNum}`)
 
 
@@ -422,6 +439,7 @@ function NextTurn() {
                         for (let index = 0; index < tempList.length; index++) {
                             card.classList.add(tempList[index])
                         }
+                        Message(tempList[1])
                     }
                     let src = 'img/cards/' + card.classList.value.split("Q")[1]
                     cardAnimation(card, src, "throw")
@@ -455,6 +473,11 @@ function NextTurn() {
 function pause(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function Message(msg) {
+    console.log(msg)
+}
+
 
 function cardAnimation(card, src, action, nextPlayer) {
     let newCard = card.cloneNode()

@@ -148,8 +148,9 @@ h2 {
     border: none;
     font-weight: bold;
     position: absolute;
-    top: 45%;
-    left: 10%;
+    top: 50%;
+    left: 5%;
+    border: 2px solid white;
 }
 
 #newMatchBtn:hover,
