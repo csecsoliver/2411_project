@@ -316,6 +316,7 @@ async function ThrowCard(card) {
                     ShowUnoBtn(false)
                     needToPull == 1 ? needToPull = 2 : needToPull += 2
                     document.querySelector(".turn").classList.add("canPull")
+                    Message(color = false)
                 }
             }, 1500);
             await pause(1500)
@@ -421,6 +422,7 @@ function NextTurn() {
     thrownCards = [throwPool.lastChild]
 
     if (nextPlayer == player) {
+        if (needToPull != 1) Message(color = false)
         document.querySelectorAll(".player .card").forEach(element => {
             element.draggable = true
             Highlight()
@@ -444,7 +446,7 @@ function NextTurn() {
                         for (let index = 0; index < tempList.length; index++) {
                             card.classList.add(tempList[index])
                         }
-                        Message(tempList[1])
+                        Message(tempList[1], true)
                     }
                     let src = 'img/cards/' + card.classList.value.split("Q")[1]
                     cardAnimation(card, src, "throw")
@@ -479,12 +481,14 @@ function pause(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function Message(msg) {
-    messageBox.innerHTML = `Next card should be <span style="color: ${msg}">${msg}.</span>`
+function Message(msg, color) {
+    if (color) messageBox.innerHTML = `Next card should be <span style="color: ${msg}">${msg}.</span>`
+    else messageBox.innerHTML = `You must pull <span style="color: red">${needToPull}</span> cards.`
+
     messageBox.style.scale = 1
     setTimeout(() => {
         messageBox.style.scale = 0
-    }, 6000);
+    }, 3800);
 }
 
 
