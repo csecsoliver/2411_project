@@ -19,6 +19,7 @@ let gameReversed = false
 let colorPick = false;
 let IMAGES = [];
 let needToPull = 1
+let carryOverPull = 0
 let pulled = 0
 
 Main();
@@ -290,7 +291,8 @@ async function ThrowCard(card) {
         } else {
             thrownCards.push(card)
         }
-
+        if (throwPool.lastChild.classList.contains("+4") && card.classList.contains("+4")) { carryOverPull += 4; needToPull = 1; }
+        if (throwPool.lastChild.classList.contains("+2") && card.classList.contains("+2")) { carryOverPull += 2; needToPull = 1; }
 
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
         card.draggable = false;
@@ -392,7 +394,7 @@ function NextTurn() {
         topCard.classList.add("lookedAt")
     }
 
-
+    if (carryOverPull != 0) needToPull += carryOverPull
 
     if (gameReversed) {
         nextNum -= addition;
@@ -472,6 +474,7 @@ function NextTurn() {
             }
         }, 1000)
     }
+    carryOverPull = 0
     ShowTurnBtn(false)
 }
 
