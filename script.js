@@ -291,6 +291,8 @@ async function ThrowCard(card) {
             thrownCards.push(card)
         }
 
+        if (throwPool.lastChild.classList.contains("+4") && card.classList.contains("+4"))
+
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
         card.draggable = false;
         card.classList.remove("throwable")
@@ -482,8 +484,8 @@ function pause(ms) {
 }
 
 function Message(msg, color) {
-    if (color) messageBox.innerHTML = `Next card should be <span style="color: ${msg}">${msg}.</span>`
-    else messageBox.innerHTML = `You must pull <span style="color: red">${needToPull}</span> cards.`
+    if (color) messageBox.innerHTML = `Next card must be <span style="color: ${msg}">${msg}.</span>`
+    else messageBox.innerHTML = `You must pull <span style="color: red">${needToPull}</span> cards or place another plus card.`
 
     messageBox.style.scale = 1
     setTimeout(() => {
