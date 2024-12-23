@@ -291,7 +291,6 @@ async function ThrowCard(card) {
             thrownCards.push(card)
         }
 
-        if (throwPool.lastChild.classList.contains("+4") && card.classList.contains("+4"))
 
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
         card.draggable = false;
@@ -388,10 +387,7 @@ function NextTurn() {
 
         if (counters["reverse"] % 2 != 0) gameReversed = !gameReversed
         addition += counters["skip"]
-        // handle +2 cards
-        for (let index = 0; index < counters["plus2"]; index++) {
-            needToPull += 2
-        }
+        needToPull += 2 * counters["plus2"]
 
         topCard.classList.add("lookedAt")
     }
@@ -490,7 +486,7 @@ function Message(msg, color) {
     messageBox.style.scale = 1
     setTimeout(() => {
         messageBox.style.scale = 0
-    }, 3800);
+    }, 3000);
 }
 
 
