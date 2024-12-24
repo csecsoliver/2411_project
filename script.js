@@ -25,6 +25,7 @@ let pulled = 0
 Main();
 
 function Main() {
+    document.querySelector("body").addEventListener("keydown", (e) => e.key == "F5" ? null : e.preventDefault())
     gameScreen.style.height = window.innerHeight + "px"
     window.addEventListener("resize", function () {
         gameScreen.style.height = window.innerHeight + "px"
@@ -269,6 +270,7 @@ function canThrow(card) {
 
 async function ThrowCard(card) {
     const parent = card.parentElement
+    let tempBool = false
     if (canThrow(card)) {
         if (player.classList.contains("turn")) {
             if (colorPick) {
@@ -291,8 +293,13 @@ async function ThrowCard(card) {
         } else {
             thrownCards.push(card)
         }
-        if (throwPool.lastChild.classList.contains("+4") && card.classList.contains("+4")) { carryOverPull += 4; needToPull = 1; }
-        if (throwPool.lastChild.classList.contains("+2") && card.classList.contains("+2")) { carryOverPull += 2; needToPull = 1; }
+
+
+        if (throwPool.lastChild.classList.contains("+4") && card.classList.contains("+4")) { carryOverPull += 4; needToPull = 1; tempBool = true }
+        else if (throwPool.lastChild.classList.contains("+2") && card.classList.contains("+2")) { carryOverPull += 2; needToPull = 1; tempBool = true }
+
+        if (carryOverPull != 0 && !tempBool) { needToPull += carryOverPull; carryOverPull = 0 }
+
 
         document.querySelector('#styleCard').src = throwPool.lastChild.src;
         card.draggable = false;
@@ -308,6 +315,7 @@ async function ThrowCard(card) {
         else if (parent.children.length == 2 && parent == player) {
             let saidUNO = false
             ShowUnoBtn()
+            ShowTurnBtn(false)
 
             unoBtn.addEventListener("click", () => {
                 saidUNO = true
@@ -319,7 +327,7 @@ async function ThrowCard(card) {
                     ShowUnoBtn(false)
                     needToPull == 1 ? needToPull = 2 : needToPull += 2
                     document.querySelector(".turn").classList.add("canPull")
-                    Message(color = false)
+                    Message(true, false)
                 }
             }, 1500);
             await pause(1500)
@@ -394,7 +402,6 @@ function NextTurn() {
         topCard.classList.add("lookedAt")
     }
 
-    if (carryOverPull != 0) needToPull += carryOverPull
 
     if (gameReversed) {
         nextNum -= addition;
@@ -474,7 +481,6 @@ function NextTurn() {
             }
         }, 1000)
     }
-    carryOverPull = 0
     ShowTurnBtn(false)
 }
 
@@ -484,7 +490,11 @@ function pause(ms) {
 
 function Message(msg, color) {
     if (color) messageBox.innerHTML = `Next card must be <span style="color: ${msg}">${msg}.</span>`
-    else messageBox.innerHTML = `You must pull <span style="color: red">${needToPull}</span> cards or place another plus card.`
+    else if (msg) {
+        messageBox.innerHTML = `You must pull <span style="color: red">${needToPull}</span> cards.`
+    } else {
+        messageBox.innerHTML = `You must pull <span style="color: red">${needToPull}</span> cards or place another plus card.`
+    }
 
     messageBox.style.scale = 1
     setTimeout(() => {
