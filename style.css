@@ -37,7 +37,6 @@ body {
 }
 
 #turnBtn {
-    opacity: 0;
     display: block;
     border-radius: 25px;
     padding: 40px;
@@ -154,9 +153,9 @@ h2 {
 }
 
 #newMatchBtn:hover,
-#turnBtn:hover,
+.next:hover,
 #mainMenuBtn:hover {
-    background-color: rgb(92, 92, 231);
+    background-color: rgb(92, 92, 231) !important;
     color: white;
     border: 1px solid transparent;
     text-shadow: 2px 2px 1px #263b18;
@@ -167,7 +166,7 @@ h2 {
 }
 
 #newMatchBtn:active,
-#turnBtn:active,
+.next:active,
 #unoBtn:active,
 #mainMenuBtn:active {
     filter: brightness(40%);
@@ -201,6 +200,11 @@ h2 {
 
 .color:hover {
     animation: border 1.4s infinite;
+}
+
+
+.next {
+    animation: border 1s infinite;
 }
 
 /* infinite border pulse animation */
@@ -307,7 +311,7 @@ h2 {
 
 .animatedCard {
     position: absolute;
-    z-index: 100;
+    z-index: 95;
     top: 46%;
     left: 100%;
 }
