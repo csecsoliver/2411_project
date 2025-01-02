@@ -95,11 +95,11 @@ function NewMatch() {
 
 function ShowTurnBtn(bool = true) {
     if (bool) {
-        turnBtn.style.opacity = 1
+        turnBtn.classList.add("next")
         turnBtn.disabled = false
         turnBtn.style.cursor = "pointer"
     } else {
-        turnBtn.style.opacity = 0
+        turnBtn.classList.remove("next")
         turnBtn.disabled = true
         turnBtn.style.cursor = "default"
     }
