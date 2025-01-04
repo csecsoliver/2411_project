@@ -1,0 +1,45 @@
+from openai import OpenAI
+client = OpenAI()
+
+def get_move(session_id, hand, throw_pool, chosen_color):
+    hand_str = ""
+    for i in hand:
+        hand_str += i
+        hand_str += ", "
+    if chosen_color != None:
+        throw_pool[2] = chosen_color
+    completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "developer", "content": """Your are a helful assistant.
+    You are an uno player. You will get the cards present in your hands and the throwing pool. The next message will contain all the information you will need to answer.
+
+    The cards' labels are formulated as follows:
+    the first two letters will assign a type to the card (d4, d2, n1, n2, n3, n4 ,n5, n6, n7, n8, n9, n0, s0, k0, c0)
+    The third letter will assign a color to the card (b, r, y, g, n)
+
+    You can choose a card from your hand, or draw one from the stack.
+
+    How to check if you can place a card:
+    1. Check the third letter: "b", "r", "y", "g" can be either placed on a matching card or an "n" card and an "n" card can be placed on any card
+    2. If that wouldn't work, check the first two letters, they can be placed on a card with a matching type
+
+    Your response should only contain the move you have chosen, no extra text, capitalization or punctuation needed.
+    If your move is "c0n", also place a letter indicating the chosen color separated by a space.
+    if the card in your hand doesn’t match either by color or type with the card in the throwing pool, you should draw instead of making an incorrect move."""},
+        {"role": "user", "content": f"Hand: \"{hand_str}\" \nThrowing pool: \"{throw_pool}\""}
+    ]
+    )
+
+    print(completion.choices[0].message.content)
+    if len(completion.choices[0].message.content) > 3:
+        move = completion.choices[0].message.content.split(" ")[0]
+        chosen_color = completion.choices[0].message.content.split(" ")[1]
+        return move, chosen_color
+    else:
+        move = completion.choices[0].message.content
+        return move, None
+    
+print(get_move("123", ["c0n"], "d2b", None))
+# print(client.models.list())
+

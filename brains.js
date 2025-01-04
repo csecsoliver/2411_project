@@ -46,11 +46,14 @@ aiform = `<div id="aiform"
 
 document.getElementById("aiform").outerHTML = aiform;
 document.getElementById("startBtn").outerHTML = '<button onclick="StartGameBrain()" id="startBtn">Start Game</button>'
+document.getElementById("turnBtn").outerHTML = '<button id="turnBtn" disabled onclick="NextTurnBrain()">End Turn</button>'
 
-let players = {player1:[],player2:[],player3:[],player4:[]}
+let players = { player1: [], player2: [], player3: [], player4: [] }
 
-let card_function_index = {1:"n1",2:"n2",3:"n3",4:"n4",5:"n5",6: "n6", 7: "n7", }
-
+let card_function_index = { 1: "n1", 2: "n2", 3: "n3", 4: "n4", 5: "n5", 6: "n6", 7: "n7", }
+let gamemode = "ai"
+let move = ""
+let aitoken = ""
 
 if (document.getElementById("aiform").outerHTML == aiform) {
     console.log('Successful gameloop injection. To disable: unlink brains.js from index.html')
@@ -62,7 +65,7 @@ function StartGameBrain() {
     StartGame()
     console.log("player1 cards:")
     document.querySelectorAll(".player .card").forEach(element => {
-        
+
         console.log(element)
 
     });
@@ -74,13 +77,188 @@ function StartGameBrain() {
     console.log("player3 cards:")
     document.querySelectorAll("#player3 .card").forEach(element => {
         console.log(element)
-        
+
     });
     console.log("player4 cards:")
     document.querySelectorAll("#player4 .card").forEach(element => {
         console.log(element)
-        
+
     });
 }
 
+function NextTurnBrain() {
 
+
+
+
+    pulled = 0
+    needToPull = 1
+    lastPlayer = document.querySelector('.turn')
+    let topCard = thrownCards.at(-1)
+    let addition = 1
+    let nextNum = Number(lastPlayer.id.slice(-1))
+    let counters = { "reverse": 0, "skip": 0, "plus2": 0 }
+
+    if (lastPlayer == player) {
+        document.querySelectorAll(".player .card").forEach(element => {
+            element.draggable = false
+        });
+    }
+
+
+
+    if (!topCard.classList.contains("lookedAt")) {
+        thrownCards.forEach(element => {
+            if (element.classList.contains("+4") || element.classList.contains("+2")) needToPull = 0
+        });
+        thrownCards.forEach(element => {
+            if (element.classList.contains("reverse")) counters["reverse"]++
+            if (element.classList.contains("skip")) counters["skip"]++
+            if (element.classList.contains("+2")) counters["plus2"]++
+            if (element.classList.contains("+4")) needToPull += 4
+        });
+
+        if (counters["reverse"] % 2 != 0) gameReversed = !gameReversed
+        addition += counters["skip"]
+        needToPull += 2 * counters["plus2"]
+
+        topCard.classList.add("lookedAt")
+    }
+
+
+    if (gameReversed) {
+        nextNum -= addition;
+    }
+    else {
+        nextNum += addition;
+    }
+
+    if (nextNum > hands.length) {
+        nextNum = nextNum % hands.length;
+    }
+    if (nextNum < 1) {
+        nextNum = hands.length + (nextNum % hands.length);
+    }
+    let nextPlayer = document.querySelector(`#player${nextNum}`)
+
+
+
+    lastPlayer.classList.remove("turn")
+    lastPlayer.classList.remove("canPull")
+    nextPlayer.classList.add("turn");
+    nextPlayer.classList.add("canPull");
+    throwPool.lastChild.classList.add("default")
+    threw = false
+    thrownCards = [throwPool.lastChild]
+
+    if (nextPlayer == player) {
+        if (needToPull != 1) Message(color = false)
+        document.querySelectorAll(".player .card").forEach(element => {
+            element.draggable = true
+            Highlight()
+        });
+    }
+
+    // enemy AI
+    else {
+        setTimeout(async function () {
+            let didntThrow = true
+            if (gamemode == "local") {
+                let didntThrow = true
+                document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
+                    if (canThrow(card) && didntThrow) {
+                        if (card.classList.contains("wild") || card.classList.contains("+4")) {
+                            const tempList = []
+                            card.classList.forEach(element => {
+                                tempList.push(element)
+                            });
+                            tempList.push(card.classList[1])
+                            tempList[1] = colors[Math.floor(Math.random() * colors.length)];
+                            card.classList = []
+                            for (let index = 0; index < tempList.length; index++) {
+                                card.classList.add(tempList[index])
+                            }
+                            Message(tempList[1], true)
+                        }
+                        let src = 'img/cards/' + card.classList.value.split("Q")[1]
+                        cardAnimation(card, src, "throw")
+
+                        setTimeout(function () {
+                            card.src = src
+                            ThrowCard(card)
+                            document.querySelectorAll(".animatedCard").forEach(element => {
+                                element.remove()
+                            });
+                        }, CARDANIMSPEED * 1000)
+                        didntThrow = false
+                    }
+                })
+                if (!didntThrow) await pause(CARDANIMSPEED * 1000)
+                if (didntThrow || needToPull != 1) {
+                    for (let index = 0; index < needToPull; index++) {
+                        cardAnimation(pool.lastChild, 'img/card.png', "pull", nextPlayer)
+                        await pause(CARDANIMSPEED * 1000)
+                        PullCard(nextPlayer)
+                        document.querySelectorAll(".animatedCard").forEach(element => {
+                            element.remove()
+                        });
+                    }
+                }
+            } else if (gamemode == "ai") {
+                let didntThrow = true
+                document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
+                    if (canThrow(card) && didntThrow) {
+                        if (card.classList.contains("wild") || card.classList.contains("+4")) {
+                            const tempList = []
+                            card.classList.forEach(element => {
+                                tempList.push(element)
+                            });
+                            tempList.push(card.classList[1])
+                            tempList[1] = colors[Math.floor(Math.random() * colors.length)];
+                            card.classList = []
+                            for (let index = 0; index < tempList.length; index++) {
+                                card.classList.add(tempList[index])
+                            }
+                            Message(tempList[1], true)
+                        }
+                        let src = 'img/cards/' + card.classList.value.split("Q")[1]
+                        cardAnimation(card, src, "throw")
+
+                        setTimeout(function () {
+                            card.src = src
+                            ThrowCard(card)
+                            document.querySelectorAll(".animatedCard").forEach(element => {
+                                element.remove()
+                            });
+                        }, CARDANIMSPEED * 1000)
+                        didntThrow = false
+                    }
+                })
+                if (!didntThrow) await pause(CARDANIMSPEED * 1000)
+                if (didntThrow || needToPull != 1) {
+                    for (let index = 0; index < needToPull; index++) {
+                        cardAnimation(pool.lastChild, 'img/card.png', "pull", nextPlayer)
+                        await pause(CARDANIMSPEED * 1000)
+                        PullCard(nextPlayer)
+                        document.querySelectorAll(".animatedCard").forEach(element => {
+                            element.remove()
+                        });
+                    }
+                }
+                move = httpGet("http://localhost:8080/aimove/"+aitoken + "/<hand>/<throw_pool>/<chosen_color>")
+            } else if (gamemode == "mp") {
+                NextTurnMP()
+            }
+        }, 1000)
+    }
+
+}
+
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
