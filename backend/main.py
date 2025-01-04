@@ -1,8 +1,10 @@
-from bottle import route, run, get, post, request, template
+from bottle import app, route, run, get, post, request, template
 import time
 import ai
 import check
 import multiplayer
+
+from bottle_cors_plugin import cors_plugin
 
 @route('/getform')
 def hello():
@@ -34,19 +36,30 @@ def move():
 @get('/aimove/<session_id>/<hand>/<throw_pool>/<chosen_color>')
 def aimove(session_id, hand, throw_pool, chosen_color):
     retries = 0
+    if session_id != "asdfghjkl-123olio":
+        return "Invalid session ID"
     while True:
-        move, chosen_color = ai.get_move(session_id, hand, throw_pool, chosen_color)
+        hand_temp = hand.split(",")
+        move= ai.get_move(session_id, hand_temp, throw_pool, chosen_color)
         viablility = check.check_move(throw_pool, move)
-        if viablility == True and move[2] == chosen_color:
-            break
+        if move == "draw":
+            print("draw detected")
+            return f"{move} {chosen_color}"
+        elif viablility == True or move[2] == chosen_color:
+            print("corect move")
+            return f"{move} {chosen_color}"
         else:
             retries += 1
             if retries == 2:
                 move = "draw"
+                print("draw forced")
                 break
             continue
-    return move
-    
+    return f"{move} {chosen_color}"
+
+
+app = app()
+app.install(cors_plugin('*'))
 if __name__ == '__main__':
     # card naming scheme {function}{function_num/card_num}{card_color}
     # d4n: draw 4 grey

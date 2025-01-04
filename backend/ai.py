@@ -6,13 +6,13 @@ def get_move(session_id, hand, throw_pool, chosen_color):
     for i in hand:
         hand_str += i
         hand_str += ", "
-    if chosen_color != None:
-        throw_pool[2] = chosen_color
+    if chosen_color != "n":
+        throw_pool = throw_pool[0] + throw_pool[1] + chosen_color
     completion = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
-        {"role": "developer", "content": """Your are a helful assistant.
-    You are an uno player. You will get the cards present in your hands and the throwing pool. The next message will contain all the information you will need to answer.
+        {"role": "developer", "content": "Your are a helful and smart assistant."},
+        {"role": "user", "content": """    You are an uno player. You will get the cards present in your hands and the throwing pool. The next message will contain all the information you will need to answer.
 
     The cards' labels are formulated as follows:
     the first two letters will assign a type to the card (d4, d2, n1, n2, n3, n4 ,n5, n6, n7, n8, n9, n0, s0, k0, c0)
@@ -25,21 +25,15 @@ def get_move(session_id, hand, throw_pool, chosen_color):
     2. If that wouldn't work, check the first two letters, they can be placed on a card with a matching type
 
     Your response should only contain the move you have chosen, no extra text, capitalization or punctuation needed.
-    If your move is "c0n", also place a letter indicating the chosen color separated by a space.
+    Only if your move is c0n or d4n, also place a letter indicating the chosen color separated by a space.
     if the card in your hand doesn’t match either by color or type with the card in the throwing pool, you should draw instead of making an incorrect move."""},
         {"role": "user", "content": f"Hand: \"{hand_str}\" \nThrowing pool: \"{throw_pool}\""}
     ]
     )
-
-    print(completion.choices[0].message.content)
-    if len(completion.choices[0].message.content) > 3:
-        move = completion.choices[0].message.content.split(" ")[0]
-        chosen_color = completion.choices[0].message.content.split(" ")[1]
-        return move, chosen_color
-    else:
-        move = completion.choices[0].message.content
-        return move, None
+    print(f"Hand: \"{hand_str}\" \nThrowing pool: \"{throw_pool}\"")
+    print("ai chose:", completion.choices[0].message.content)
+    return completion.choices[0].message.content
     
-print(get_move("123", ["c0n"], "d2b", None))
+# print(get_move("123", ["c0n"], "d2b", None))
 # print(client.models.list())
 

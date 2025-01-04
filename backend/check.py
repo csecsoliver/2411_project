@@ -24,11 +24,15 @@ compatible_3 = {
     
 }
 def check_move(throw_pool, move):
-    print(throw_pool)
-    print(move)
-    if move[1] in compatible_3[throw_pool[2]]:
+    print("throw pool:", throw_pool)
+    print("checking move:",move)
+    if move[2] in compatible_3[throw_pool[2]]:
+        print("color check ok")
         return True
     elif move[0]+move[1] in compatible_1[throw_pool[0]+throw_pool[1]]:
+        print("function check ok")
         return True
     else:
+        print("move not compatible: ", move[2], compatible_3[throw_pool[2]], "/", move[0]+move[1], compatible_1[throw_pool[0]+throw_pool[1]])
+        
         return False
