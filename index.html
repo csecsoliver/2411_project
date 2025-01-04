@@ -34,7 +34,7 @@
                 <img src="img/card.png" class="card styleCard" style="display: inline;">
                 <img id="poolCard" src="img/card.png" class="card" style="display: inline;" draggable="false">
             </div>
-            <button id="turnBtn" disabled onclick="NextTurn()">End Turn</button>
+            <button id="turnBtn" disabled onclick="NextTurnBrain()">End Turn</button>
             <div id="throwPool" ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)">
                 <img id="styleCard" src="" class="card styleCard" draggable="false">
             </div>
@@ -61,14 +61,14 @@
     <div id="startScreen">
         <img src="img/logo.png" class="logo" alt="">
         <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
-        <button onclick="StartGame()" id="newMatchBtn">New Match</button>
+        <button onclick="StartGameBrain()" id="newMatchBtn">New Match</button>
     </div>
 
     <div id="newMatchScreen">
         <img src="img/logo.png" class="logo" alt="">
         <div id="aiform"></div>
 
-        <button onclick="StartGame()" id="startBtn">Start Game</button>
+        <button onclick="StartGameBrain()" id="startBtn">Start Game</button>
     </div>
 
     <div id="endScreen">

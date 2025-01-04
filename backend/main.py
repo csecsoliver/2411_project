@@ -27,8 +27,8 @@ def get_state(session_id):
     
     return sessions[session_id].players, sessions[session_id].throw_pool, sessions[session_id].chosen_color
     
-@get('/submit/<pool>/<throw_pool>/<move>/<hand>/<session_id>/<player_id>')
-def move(throw_pool, move, session_id, player_id):
+@get('/submit/<pool>/<throw_pool>/<move>/<hand>/<reverse>/<carryOverPull>/<session_id>/<player_id>')
+def move():
     return None
     
 @get('/aimove/<session_id>/<hand>/<throw_pool>/<chosen_color>')

@@ -467,6 +467,7 @@ function NextTurn() {
                     }, CARDANIMSPEED * 1000)
                     didntThrow = false
                 }
+                console.log(card)
             })
             if (!didntThrow) await pause(CARDANIMSPEED * 1000)
             if (didntThrow || needToPull != 1) {
