@@ -9,10 +9,10 @@ def get_move(session_id, hand, throw_pool, chosen_color):
     if chosen_color != "n":
         throw_pool = throw_pool[0] + throw_pool[1] + chosen_color
     completion = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-4o",
     messages=[
-        {"role": "developer", "content": "Your are a helful and smart assistant."},
-        {"role": "user", "content": """    You are an uno player. You will get the cards present in your hands and the throwing pool. The next message will contain all the information you will need to answer.
+        # {"role": "developer", "content": "Your are a helful and smart assistant."},
+        {"role": "user", "content": """You are an uno player. You will get the cards present in your hands and the throwing pool. The next message will contain all the information you will need to answer.
 
     The cards' labels are formulated as follows:
     the first two letters will assign a type to the card (d4, d2, n1, n2, n3, n4 ,n5, n6, n7, n8, n9, n0, s0, k0, c0)

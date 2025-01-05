@@ -36,7 +36,7 @@ def move():
 @get('/aimove/<session_id>/<hand>/<throw_pool>/<chosen_color>')
 def aimove(session_id, hand, throw_pool, chosen_color):
     retries = 0
-    if session_id != "asdfghjkl-123olio":
+    if session_id != "verysecureid":
         return "Invalid session ID"
     while True:
         hand_temp = hand.split(",")

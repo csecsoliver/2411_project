@@ -276,7 +276,7 @@ function NextTurnBrain() {
                 let chosenColor = "n"
                 if (throwPoolClass.contains("wild") || throwPoolClass.contains("+4")) {
                     throwPool = (reverseFunctionMappings.get(throwPoolClass[2]) + "n")
-                    chosenColor = reverseColorMappings.get()
+                    chosenColor = reverseColorMappings.get(throwPoolClass[1])
                 }
                 else {
                     throwPool = (reverseFunctionMappings.get(throwPoolClass[2]) + reverseColorMappings.get(throwPoolClass[1]))
@@ -298,7 +298,10 @@ function NextTurnBrain() {
                     }
                     console.log(moveClassFunction + ", " + moveClassColor + ", " + chosenColor)
                     document.querySelectorAll("#" + nextPlayer.id + " .card").forEach(card => {
-                        if (card.classList.contains(moveClassFunction) && card.classList.contains(moveClassColor) && didntThrow) {
+                        console.log("card.classList.contains(moveClassFunction" + card.classList.contains(moveClassFunction))
+                        console.log("card.classList.contains(moveClassColor)" + card.classList.contains(moveClassColor))
+
+                        if ((card.classList.contains(moveClassFunction) && card.classList.contains(moveClassColor) && didntThrow) || (card.classList.contains("wild") && card.classList.contains("+4") && didntThrow)) {
                             
                             if (card.classList.contains("wild") || card.classList.contains("+4")) {
                                 
@@ -337,7 +340,9 @@ function NextTurnBrain() {
                 NextTurnMP()
             }
         }, 1000)
+
     }
+    ShowTurnBtn(false)
 
 }
 
