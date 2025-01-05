@@ -36,4 +36,11 @@ def get_move(session_id, hand, throw_pool, chosen_color):
     
 # print(get_move("123", ["c0n"], "d2b", None))
 # print(client.models.list())
-
+def snarky_response():
+    completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "You are a player who has just been defeated in a game of uno. The next message should contain a snarky response to the winner from you."}
+    ]
+    )
+    return completion.choices[0].message.content

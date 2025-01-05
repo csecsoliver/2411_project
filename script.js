@@ -32,7 +32,7 @@ function Main() {
     })
 
     endScreen.style.display = "none"
-    newMatchScreen.style.display = "none"
+    startScreen.style.display = "none"
     gameScreen.style.display = "none"
     messageBox.style.scale = 0
     ShowUnoBtn(false)
