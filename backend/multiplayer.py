@@ -17,9 +17,9 @@ class Session:
             self.pool -= 1
             self.players[player_id].append(move[1])
             return [self.players, self.throw_pool, self.chosen_color]
-        elif check.check_move(move[0]):
-            self.players[player_id].remove(move[0])
-            self.throw_pool = move[0]
+        elif check.check_move(move[1]):
+            self.players[player_id].remove(move[1])
+            self.throw_pool = move[1]
             return [self.players, self.throw_pool, move[1]]
         else:
             print("bajvan")

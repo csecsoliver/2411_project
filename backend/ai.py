@@ -42,7 +42,12 @@ def snarky_response():
     completion = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
-        {"role": "user", "content": "You are a player who has just made a move in a game of uno. The next message should contain a snarky response to the others from you."}
-    ]
+        {"role": "user", "content": "You are a player who will make the next move in a game of uno. The next message should contain a snarky response to the others from you. Don't use quotes. Don't asssume any previous context. Don't use any punctuation. Don't use any capitalization. Use emojis."}
+    ],
+    temperature=1.26,
+    max_completion_tokens=250,
+    top_p=1,
+    frequency_penalty=0,
+    presence_penalty=0
     )
     return completion.choices[0].message.content

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO</title>
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <script src="brains.js" defer></script>
+</head>
+
+<body ondragstart="DragStart(event)" oncontextmenu="return false">
+    <img src="img/image.png" id="FIGMA" alt="">
+    <div id="gameScreen">
+        <div class="row">
+            <div class="hand" id="player2">
+                <h2>Machine 1</h2>
+            </div>
+            <div class="hand" id="player3">
+                <h2>Machine 2</h2>
+            </div>
+            <div class="hand" id="player4">
+                <h2>Machine 3</h2>
+            </div>
+        </div>
+        <div class="row2">
+            <div class="divider">
+                <button id="unoBtn">Click to say UNO!</button>
+            </div>
+
+            <div id="pool">
+                <img src="img/card.png" class="card styleCard" style="display: inline;">
+                <img id="poolCard" src="img/card.png" class="card" style="display: inline;" draggable="false">
+            </div>
+            <button id="turnBtn" disabled onclick="NextTurnBrain()">End Turn</button>
+            <div id="throwPool" ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)">
+                <img id="styleCard" src="" class="card styleCard" draggable="false">
+            </div>
+
+            <div class="divider">
+                <div id="messageBox">a</div>
+            </div>
+        </div>
+        <div ondragover="DragOver(event)" ondragleave="DragLeave(event)" ondrop="Drop(event)"
+            class="player hand turn canPull" id="player1">
+            <h2>You</h2>
+        </div>
+
+        <div class="colorPicker">
+            <h2>Pick a color!</h2>
+            <div class="red color" style="background-color: red;"></div>
+            <div class="blue color" style="background-color: rgb(80, 80, 201);"></div>
+            <div class="green color" style="background-color: green;"></div>
+            <div class="yellow color" style="background-color: rgb(255, 174, 0);"></div>
+        </div>
+
+    </div>
+
+    <div id="startScreen">
+        <img src="img/logo.png" class="logo" alt="">
+        <h3 style="color: white; text-align: center;">Unofficial Online UNO</h3>
+        <button onclick="StartGameBrain()" id="newMatchBtn">New Match</button>
+    </div>
+
+    <div id="newMatchScreen">
+        <img src="img/logo.png" class="logo" alt="">
+        <div id="aiform"></div>
+
+        <button onclick="StartGameBrain()" id="newMatchBtn">Start Game</button>
+    </div>
+
+    <div id="endScreen">
+        <h1>MATCH END</h1>
+        <div class="leaderboard">
+            <h2>Game Results</h2>
+        </div>
+        <button onclick="location.reload();" id="mainMenuBtn">Main Menu</button>
+
+    </div>
+
+
+
+</body>
+
+</html>
