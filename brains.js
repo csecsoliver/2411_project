@@ -1,5 +1,5 @@
-aiform = `<div id="aiform"
-    style="
+aiform = `
+   <div id="aiform" style="
     display:flex;
     background-color:#D9D9D9 !important;
     background-image: none;
@@ -12,34 +12,67 @@ aiform = `<div id="aiform"
     padding: 10px 20px;
     padding-top: 0;
     margin-bottom: 10px;
-    margin-top:-40px
+    margin-top:-50px    
     ">
 
-    <div id="form1" style="height: auto;">
-        <h3>SELECT OPPONENT</h3>
-        <div stye="
+    <div id="form1" style="
+        height: auto;
+        margin-top: 13px;
+        margin-right: 10px;
+        
+      ">
+        <h3 style="
+            
+            margin: 0;
+            margin-bottom: 10px;
+        ">SELECT OPPONENT</h3>
+        <div style="
         display: flex;
         ">
-            
+
             <div class="form">
-                <form>
-                    <input type="radio" id="offline" name="opponent" value="HTML">
-                    <label for="offline">Easy (Offline)</label><br>
-                    <input type="radio" id="gpt" name="opponent" value="CSS">
-                    <label for="gpt">Hard (ChatGPT)</label><br>
-                    <input type="radio" id="mp" name="opponent" value="JavaScript">
-                    <label for="mp">Multiplayer
-                    </label><br>
+                <form onchange="FormChange()" id="gamemode">
+                    <input type="radio" id="offline" name="opponent" value="local">
+                    <label for="offline">Simple (Offline)</label><br>
+                    <input type="radio" id="gpt" name="opponent" value="ai">
+                    <label for="gpt">Smart (ChatGPT)</label><br>
+                    <input type="radio" id="mp" name="opponent" value="mp" disabled>
+                    <label for="mp">Multiplayer</label><br>
                 </form>
             </div>
         </div>
     </div>
-<div class="spacer" style="
-            width: 0px;
-            border: 1px solid black;
-            height:inherit;
-            "></div>
-            </div>
+    <div class="spacer" style="
+        width: 0px;
+        border: 1px solid black;
+        height:70px;
+        position: relative;
+        top: 40px;
+        left: 0px;
+
+        ">
+    </div>
+    <div style="height: auto;
+            margin-top: 13px;
+            margin-right: 10px;
+            margin-left: 15px;
+        "
+        id="form2">
+        <h3 style="
+            margin: 0;
+            margin-bottom: 10px;
+        ">
+        SELECT OPTIONS
+        </h3>
+        <form onchange="" >
+            <label for="name">Username:</label><br>
+            <input type="text" id="name" name="name" value="Player1" style="border-radius: 5px;"><br>
+            <label for="token" id="tokenlabel">AI token</label>
+            <input type="password" id="token" name="token" value="" style="border-radius: 5px;">
+            <!-- <input type="submit" value="Submit"> -->
+        </form>
+        
+    </div>
 
 `;
 
@@ -109,6 +142,9 @@ if (document.getElementById("aiform").outerHTML == aiform) {
 } else {
     console.log(document.getElementById("aiform").outerHTML)
 }
+document.getElementById("tokenlabel").style.display = "none"
+document.getElementById("token").style.display = "none"
+
 
 function StartGameBrain() {
     StartGame()
@@ -134,7 +170,16 @@ function StartGameBrain() {
 
     });
 }
-
+function FormChange() {
+    gamemode = document.querySelector('input[name="opponent"]:checked').value
+    if (gamemode == "ai") {
+        document.getElementById("tokenlabel").style.display = "block"
+        document.getElementById("token").style.display = "block"
+    } else if (gamemode == "local") {
+        document.getElementById("tokenlabel").style.display = "none"
+        document.getElementById("token").style.display = "none"
+    }
+}
 function NextTurnBrain() {
 
 
