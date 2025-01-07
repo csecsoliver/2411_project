@@ -149,9 +149,9 @@ document.getElementById("token").style.display = "none"
 function StartGameBrain() {
     aitoken = document.getElementById("token").value
     if (gamemode == "ai") {
-        verify = httpGet("http://localhost:8080/ai/" + aitoken)
+        verify = httpGet("http://csnotes.ddns.net:8080/ai/" + aitoken)
     } else if (gamemode == "mp") {
-        verify = httpGet("http://localhost:8080/join/" + aitoken + "/" + document.getElementById("name").value)
+        verify = httpGet("http://csnotes.ddns.net:8080/join/" + aitoken + "/" + document.getElementById("name").value)
     }
     if (verify == "Invalid session ID") {
         alert("Invalid input")
@@ -343,9 +343,9 @@ function NextTurnBrain() {
                 }
                 console.log(hand)
                 console.log(2)
-                move = httpGet("http://localhost:8080/aimove/" + aitoken + "/" + hand + "/" + throwPool + "/" + chosenColor)
+                move = httpGet("http://csnotes.ddns.net:8080/aimove/" + aitoken + "/" + hand + "/" + throwPool + "/" + chosenColor)
                 console.log(move)
-                createFloatingMessage(httpGet("http://localhost:8080/snarky/" + aitoken), 7000);
+                createFloatingMessage(httpGet("http://csnotes.ddns.net:8080/snarky/" + aitoken), 7000);
                 // await delay(4000);
 
                 if (move == "draw") {
@@ -429,7 +429,7 @@ function NextTurnBrain() {
                 }
                 console.log(hand)
                 console.log(2)
-                move = httpGet("http://localhost:8080/submit/" + aitoken + "/" + hand + "/" + throwPool + "/" + chosenColor)
+                move = httpGet("http://csnotes.ddns.net:8080/submit/" + aitoken + "/" + hand + "/" + throwPool + "/" + chosenColor)
             }
         }, 1000)
 
