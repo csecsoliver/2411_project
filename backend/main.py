@@ -48,7 +48,10 @@ def aimove(session_id, hand, throw_pool, chosen_color):
     while True:
         hand_temp = hand.split(",")
         move= aii.get_move(session_id, hand_temp, throw_pool, chosen_color)
-        viablility = check.check_move(throw_pool, move)
+        if chosen_color in [r,g,y,b]:
+            viablility = check.check_move(throw_pool[0]+throw_pool[1]+chosen_color, move)
+        else:
+            viablility = check.check_move(throw_pool, move)
         if move == "draw":
             print("draw detected")
             return f"{move} {chosen_color}"
