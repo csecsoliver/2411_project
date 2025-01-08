@@ -147,15 +147,17 @@ document.getElementById("token").style.display = "none"
 
 
 function StartGameBrain() {
-    aitoken = document.getElementById("token").value
     if (gamemode == "ai") {
-        verify = httpGet("http://csnotes.ddns.net:80/ai/" + aitoken)
-    } else if (gamemode == "mp") {
-        verify = httpGet("http://csnotes.ddns.net:80/join/" + aitoken + "/" + document.getElementById("name").value)
-    }
-    if (verify == "Invalid session ID") {
-        alert("Invalid input")
-        return
+        aitoken = document.getElementById("token").value
+        if (gamemode == "ai") {
+            verify = httpGet("http://csnotes.ddns.net:80/ai/" + aitoken)
+        } else if (gamemode == "mp") {
+            verify = httpGet("http://csnotes.ddns.net:80/join/" + aitoken + "/" + document.getElementById("name").value)
+        }
+        if (verify == "Invalid session ID") {
+            alert("Invalid input")
+            return
+        }
     }
     StartGame()
     console.log("player1 cards:")
@@ -470,7 +472,7 @@ function createFloatingMessage(message, duration = 3000) {
     floatingMessage.style.fontSize = "25px";
 
     // Apply styles directly via JavaScript
-    
+
 
     // Append the floating message to the body
     document.body.appendChild(floatingMessage);
